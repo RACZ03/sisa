@@ -21,8 +21,12 @@ class CreateUsersTable extends Migration
             $table->bigInteger('phone')->nullable();
             $table->string('location')->nullable();
             $table->string('about_me')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable(); // Campo role_id
             $table->rememberToken();
             $table->timestamps();
+
+            // Definimos la clave foránea para el campo role_id
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('SET NULL');
         });
     }
 

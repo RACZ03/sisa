@@ -18,8 +18,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'admin',
-            'email' => 'admin@softui.com',
+            'email' => 'admin@sisa.com',
             'password' => Hash::make('secret'),
+            'role_id' => 1, // Super Administrador
             'created_at' => now(),
             'updated_at' => now()
         ]);

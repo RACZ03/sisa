@@ -33,7 +33,6 @@
         <!-- Sidenav Type -->
         <div class="mt-3">
           <h6 class="mb-0">Tipo de navegación lateral</h6>
-          <!-- <p class="text-sm">Choose between 2 different sidenav types.</p> -->
         </div>
         <div class="d-flex">
           <button class="btn bg-gradient-primary w-100 px-3 mb-2 active" data-class="bg-transparent" onclick="sidebarType(this)">Transparente</button>
