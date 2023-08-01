@@ -302,7 +302,6 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
 
     let url = '';
     let method = '';
-    let body = {};
 
     if ( id ) {
         url = '/users/' + id;

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TechnologyController;
+use App\Http\Controllers\MaterialController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,21 +59,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/technologies/{id}', [TechnologyController::class, 'destroy']);
     Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
 
-     // ROUTES FOR ROUTES
-     Route::get('routes', [EventController::class, 'index'])->name('events');
-     Route::post('/routes/store', [EventController::class, 'store']);
-     Route::put('/routes/{id}', [EventController::class, 'update']);
-     Route::delete('/routes/{id}', [EventController::class, 'destroy']);
-     Route::post('/routes/validate-unique-field', [EventController::class, 'validateUniqueField']);
+    // ROUTES FOR ROUTES
+    Route::get('routes', [EventController::class, 'index'])->name('events');
+    Route::post('/routes/store', [EventController::class, 'store']);
+    Route::put('/routes/{id}', [EventController::class, 'update']);
+    Route::delete('/routes/{id}', [EventController::class, 'destroy']);
+    Route::post('/routes/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
+    // ROUTES FOR MATERIALS
+    Route::get('materials', [MaterialController::class, 'index'])->name('materials');
+    Route::post('/materials/store', [MaterialController::class, 'store']);
+    Route::put('/materials/{id}', [MaterialController::class, 'update']);
+    Route::delete('/materials/{id}', [MaterialController::class, 'destroy']);
+    Route::post('/materials/validate-unique-field', [MaterialController::class, 'validateUniqueField']);
+
+    // ROUTES FOR INVENTORY
     Route::get('inventory', function () {
 		return view('pages/inventory/index');
 	})->name('inventory');
-
-    Route::get('materials', function () {
-        return view('pages/materials/index');
-    })->name('materials');
-
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

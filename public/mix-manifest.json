@@ -5,6 +5,8 @@
     "/assets/js/soft-ui-dashboard.min.js": "/assets/js/soft-ui-dashboard.min.js",
     "/js/soft-ui-dashboard.js": "/js/soft-ui-dashboard.js",
     "/js/pages/event.js": "/js/pages/event.js",
+    "/js/pages/materials.js": "/js/pages/materials.js",
+    "/js/pages/technologies.js": "/js/pages/technologies.js",
     "/js/pages/users.js": "/js/pages/users.js",
     "/js/plugins/jquery.inputmask.min.js": "/js/plugins/jquery.inputmask.min.js",
     "/js/plugins/seetalert2.all.min.js": "/js/plugins/seetalert2.all.min.js",
