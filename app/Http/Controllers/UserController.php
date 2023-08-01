@@ -112,6 +112,7 @@ class UserController extends Controller
             $user->phone = $validatedData['phone'];
             $user->email = $validatedData['email'];
             $user->role_id = $validatedData['role'];
+            $user->updated_at = now();
 
             // if ($validatedData['password']) {
             //     // Si se proporcionó una nueva contraseña, se actualiza
@@ -155,6 +156,7 @@ class UserController extends Controller
 
             // Actualizar el estado del usuario
             $user->state_id = $state->id;
+            $user->updated_at = now();
             $user->save();
 
             return response()->json(['message' => 'Usuario eliminado correctamente.', 'status' => 200], 200);

@@ -74,4 +74,14 @@ class State extends Model
         return $this->hasMany(InventoryDetail::class);
     }
 
+    /**
+     * Define la relación inversa "hasMany" con el modelo Event.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function event()
+    {
+        return $this->hasMany(Event::class);
+    }
+
 }

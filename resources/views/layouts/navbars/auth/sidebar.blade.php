@@ -34,14 +34,6 @@
             <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Configuraciones</h6>
         </li>
         <li class="nav-item pb-2">
-            <a class="nav-link {{ (Request::is('roles') ? 'active' : '') }}" href="{{ url('roles') }}">
-                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i style="font-size: 1rem;" class="fas fa-lg fa-lock ps-2 pe-2 text-center text-dark {{ (Request::is('roles') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-                </div>
-                <span class="nav-link-text ms-1">Roles</span>
-            </a>
-        </li>
-        <li class="nav-item pb-2">
             <a class="nav-link {{ (Request::is('users') ? 'active' : '') }}" href="{{ url('users') }}">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i style="font-size: 1rem;" class="fas fa-lg fa-users ps-2 pe-2 text-center text-dark {{ (Request::is('users') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
@@ -62,6 +54,14 @@
             </a>
         </li>
         <li class="nav-item pb-2">
+            <a class="nav-link {{ (Request::is('routes') ? 'active' : '') }}" href="{{ url('routes') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-truck ps-2 pe-2 text-center text-dark {{ (Request::is('routes') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Rutas</span>
+            </a>
+        </li>
+        <li class="nav-item pb-2">
             <a class="nav-link {{ (Request::is('materials') ? 'active' : '') }}" href="{{ url('materials') }}">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i style="font-size: 1rem;" class="fas fa-lg fa-list ps-2 pe-2 text-center text-dark {{ (Request::is('materials') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
@@ -70,11 +70,19 @@
             </a>
         </li>
         <li class="nav-item pb-2">
-            <a class="nav-link {{ (Request::is('users') ? 'active' : '') }}" href="{{ url('users') }}">
+            <a class="nav-link {{ (Request::is('technologies') ? 'active' : '') }}" href="{{ url('technologies') }}">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i style="font-size: 1rem;" class="fas fa-lg fa-truck ps-2 pe-2 text-center text-dark {{ (Request::is('users') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-ethernet ps-2 pe-2 text-center text-dark {{ (Request::is('technologies') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
                 </div>
-                <span class="nav-link-text ms-1">Rutas</span>
+                <span class="nav-link-text ms-1">Tecnologías</span>
+            </a>
+        </li>
+        <li class="nav-item pb-2">
+            <a class="nav-link {{ (Request::is('events') ? 'active' : '') }}" href="{{ url('events') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-code-branch ps-2 pe-2 text-center text-dark {{ (Request::is('events') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Eventos</span>
             </a>
         </li>
         <!-- END MODULES -->

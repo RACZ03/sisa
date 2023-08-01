@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,9 +34,35 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('profile');
 	})->name('profile');
 
-    Route::get('roles', function () {
-		return view('pages/roles/index');
-	})->name('roles');
+
+
+    // ROUTES FOR USERS
+	Route::get('users', [UserController::class, 'index'])->name('users');
+    Route::post('/users/store', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
+
+    // ROUTES FOR EVENTS
+    Route::get('events', [EventController::class, 'index'])->name('events');
+    Route::post('/events/store', [EventController::class, 'store']);
+    Route::put('/events/{id}', [EventController::class, 'update']);
+    Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
+
+    // ROUTES FOR TECHNOLOGIES
+    Route::get('technologies', [EventController::class, 'index'])->name('events');
+    Route::post('/technologies/store', [EventController::class, 'store']);
+    Route::put('/technologies/{id}', [EventController::class, 'update']);
+    Route::delete('/technologies/{id}', [EventController::class, 'destroy']);
+    Route::post('/technologies/validate-unique-field', [EventController::class, 'validateUniqueField']);
+
+     // ROUTES FOR ROUTES
+     Route::get('routes', [EventController::class, 'index'])->name('events');
+     Route::post('/routes/store', [EventController::class, 'store']);
+     Route::put('/routes/{id}', [EventController::class, 'update']);
+     Route::delete('/routes/{id}', [EventController::class, 'destroy']);
+     Route::post('/routes/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
     Route::get('inventory', function () {
 		return view('pages/inventory/index');
@@ -44,14 +71,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('materials', function () {
         return view('pages/materials/index');
     })->name('materials');
-
-	Route::get('users', [UserController::class, 'index'])->name('users');
-    Route::post('/users/store', [UserController::class, 'store']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-
-    Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
 
 
     Route::get('/logout', [SessionsController::class, 'destroy']);

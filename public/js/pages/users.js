@@ -147,7 +147,7 @@ function onCreateUser() {
 }
 
 function onEditUser(button) {
-    console.log('onEditUser');
+
     $('#newUserModalLabel').html('Editar Usuario');
     cleanModal();
     // Obtener la fila que contiene los datos del usuario
