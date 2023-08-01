@@ -1,0 +1,10 @@
+.navbar-vertical.navbar-expand-xs .navbar-collapse {
+    display: block !important;
+    overflow: auto !important;
+    height: calc(100vh - 100px) !important;
+}
+
+
+.table.dataTable tbody tr {
+    border-bottom: 2px solid rgb(220, 217, 217) !important;
+}

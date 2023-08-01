@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Material extends Model
+class Route extends Model
 {
     use HasFactory;
 
@@ -13,21 +13,9 @@ class Material extends Model
         'code',
         'name',
         'description',
-        'stock',
-        'has_series',
-        'technology_id',
+        'user_id',
         'state_id',
     ];
-
-    /**
-     * Define la relación "belongsTo" con el modelo Technology.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function technology()
-    {
-        return $this->belongsTo(Technology::class);
-    }
 
     /**
      * Define la relación "belongsTo" con el modelo State.
@@ -40,13 +28,24 @@ class Material extends Model
     }
 
     /**
-     * Define la relación inversa "hasMany" con el modelo InventoryDetail.
+     * Define la relación "belongsTo" con el modelo User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Define la relación inversa "hasMany" con el modelo Route.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function inventory_details()
+    public function routes()
     {
-        return $this->hasMany(InventoryDetail::class);
+        return $this->hasMany(Route::class);
     }
+
 
 }

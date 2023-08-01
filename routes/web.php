@@ -9,7 +9,7 @@ use App\Http\Controllers\SessionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,9 +45,14 @@ Route::group(['middleware' => 'auth'], function () {
         return view('pages/materials/index');
     })->name('materials');
 
-	Route::get('users', function () {
-		return view('pages/user-management');
-	})->name('users');
+	Route::get('users', [UserController::class, 'index'])->name('users');
+    Route::post('/users/store', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+
+    Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
+
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

@@ -22,9 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'location',
-        'about_me',
-        'role_id', // Agregamos la columna del rol (clave foránea)
+        'role_id',
+        'state_id',
     ];
 
     /**
@@ -54,6 +53,16 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Define la relación "belongsTo" con el modelo State.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function state()
+    {
+        return $this->belongsTo(State::class);
     }
 
 }
