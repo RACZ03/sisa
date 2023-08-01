@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\TechnologyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,11 +52,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
     // ROUTES FOR TECHNOLOGIES
-    Route::get('technologies', [EventController::class, 'index'])->name('events');
-    Route::post('/technologies/store', [EventController::class, 'store']);
-    Route::put('/technologies/{id}', [EventController::class, 'update']);
-    Route::delete('/technologies/{id}', [EventController::class, 'destroy']);
-    Route::post('/technologies/validate-unique-field', [EventController::class, 'validateUniqueField']);
+    Route::get('technologies', [TechnologyController::class, 'index'])->name('events');
+    Route::post('/technologies/store', [TechnologyController::class, 'store']);
+    Route::put('/technologies/{id}', [TechnologyController::class, 'update']);
+    Route::delete('/technologies/{id}', [TechnologyController::class, 'destroy']);
+    Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
 
      // ROUTES FOR ROUTES
      Route::get('routes', [EventController::class, 'index'])->name('events');
