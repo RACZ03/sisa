@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\InventoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,14 +54,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
     // ROUTES FOR TECHNOLOGIES
-    Route::get('technologies', [TechnologyController::class, 'index'])->name('events');
+    Route::get('technologies', [TechnologyController::class, 'index'])->name('technologies');
     Route::post('/technologies/store', [TechnologyController::class, 'store']);
     Route::put('/technologies/{id}', [TechnologyController::class, 'update']);
     Route::delete('/technologies/{id}', [TechnologyController::class, 'destroy']);
     Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
 
     // ROUTES FOR ROUTES
-    Route::get('routes', [EventController::class, 'index'])->name('events');
+    Route::get('routes', [EventController::class, 'index'])->name('routes');
     Route::post('/routes/store', [EventController::class, 'store']);
     Route::put('/routes/{id}', [EventController::class, 'update']);
     Route::delete('/routes/{id}', [EventController::class, 'destroy']);
@@ -74,9 +75,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/materials/validate-unique-field', [MaterialController::class, 'validateUniqueField']);
 
     // ROUTES FOR INVENTORY
-    Route::get('inventory', function () {
-		return view('pages/inventory/index');
-	})->name('inventory');
+    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
+
+    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

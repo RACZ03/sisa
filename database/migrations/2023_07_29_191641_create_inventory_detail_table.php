@@ -22,7 +22,7 @@ return new class extends Migration
 
             // Definimos la clave foránea para el campo material_id
             $table->foreign('material_id')->references('id')->on('materials')->onDelete('SET NULL');
-            $table->foreign('inventory_id')->references('id')->on('inventory')->onDelete('SET NULL');
+            $table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('SET NULL');
 
         });
     }

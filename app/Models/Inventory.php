@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
-
+    //define la tabla del modelo
     protected $fillable = [
         'code',
         'date',
