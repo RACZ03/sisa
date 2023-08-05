@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TechnologySeeder::class,
             MaterialSeeder::class,
+            RouteSeeder::class,
         ]);
     }
 }

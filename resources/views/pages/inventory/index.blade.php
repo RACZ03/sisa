@@ -88,12 +88,12 @@
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Ver Detalle" onclick="onEdit(this)">
+                                            <a href="{{ route('inventory.show', $inventory->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Ver Detalle" onclick="onEdit(this)">
                                                 <i class="fas fa-eye text-secondary"></i>
                                             </a>
-                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Anular Inventario" onclick="onDelete(this)">
+                                            <!-- <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Anular Inventario" onclick="onDelete(this)">
                                                 <i class="cursor-pointer fas fa-cancel text-secondary"></i>
-                                            </a>
+                                            </a> -->
                                         </td>
                                     </tr>
                                 @endforeach

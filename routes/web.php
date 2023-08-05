@@ -78,6 +78,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
 
     Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+    Route::get('/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+    Route::post('/inventory/store', [InventoryController::class, 'store']);
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

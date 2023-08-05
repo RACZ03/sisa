@@ -19,7 +19,7 @@ class MaterialSeeder extends Seeder
             'description' => 'OLT (Optical Line Terminal) para tecnología GPON',
             'stock' => 50,
             'has_series' => false,
-            'technology_id' => 1,
+            'technology_id' => 2,
             'state_id' => 1, // 'ACTIVE'
             'created_at' => now()
         ]);
@@ -41,7 +41,7 @@ class MaterialSeeder extends Seeder
             'description' => 'Cable de fibra óptica monomodo para GPON',
             'stock' => 5000,
             'has_series' => false,
-            'technology_id' => 1,
+            'technology_id' => 2,
             'state_id' => 1, // 'ACTIVE'
             'created_at' => now()
         ]);
@@ -74,7 +74,7 @@ class MaterialSeeder extends Seeder
             'description' => 'Cable de conexión para tecnología GPON',
             'stock' => 1000,
             'has_series' => false,
-            'technology_id' => 1,
+            'technology_id' => 2,
             'state_id' => 1, // 'ACTIVE'
             'created_at' => now()
         ]);
@@ -85,7 +85,7 @@ class MaterialSeeder extends Seeder
             'description' => 'Equipo de prueba para tecnología GPON',
             'stock' => 10,
             'has_series' => true,
-            'technology_id' => 1,
+            'technology_id' => 2,
             'state_id' => 1, // 'ACTIVE'
             'created_at' => now()
         ]);
