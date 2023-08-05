@@ -18,15 +18,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\InventoryExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class InventoryController extends Controller
 {
     public function index()
     {
-        // get states code ACTIVE
+        // get states code ACTIVE and INCACTIVE
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
-        // get inventory data order by created_at desc and state active
-        $inventories = Inventory::where('state_id', $state->id)->orderBy('created_at', 'desc')->get();
+        $stateInactive = DB::table('states')->where('code', '=', 'INACTIVE')->first();
+        // get inventory data order by created_at desc and state active and inactive
+        $inventories = Inventory::where('state_id', $state->id)->orWhere('state_id', $stateInactive->id)->orderBy('created_at', 'desc')->get();
 
         return view('pages/inventory/index', ['inventories' => $inventories]);
     }
@@ -163,5 +167,54 @@ class InventoryController extends Controller
         return $codigo;
     }
 
+    public function changeStatus(Request $request, $id)
+    {
+        try {
+            // Find inventory
+            $inventory = Inventory::find($id);
+            // Get code state
+            $state = State::where('id', $inventory->state_id)->firstOrFail();
+
+            // Verify if code is ACTIVE
+            if ($state->code == 'ACTIVE') {
+                // Get the ID of the INACTIVE state
+                $stateInactive = State::where('code', 'INACTIVE')->first();
+                $inventory->state_id = $stateInactive->id;
+                $inventory->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'El estado del registro se anuló correctamente.',
+                ]);
+            } else {
+                // Get the ID of the ACTIVE state
+                $stateActive = State::where('code', 'ACTIVE')->first();
+                $inventory->state_id = $stateActive->id;
+                $inventory->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'El estado del registro se activó correctamente.',
+                ]);
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Error al cambiar el estado del registro.',
+                'error' => $e
+            ]);
+        }
+    }
+
+
+    // EXPORTS EXCEL
+    public function exportToExcel($id)
+    {
+        $date = Carbon::now();
+        // concatener fecha y hora
+        $date = $date->format('d-m-Y H:i:s');
+        // get inventory data
+        return Excel::download(new InventoryExport($id), 'inventario_' . $date . '.xlsx');
+    }
 
 }

@@ -80,6 +80,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
     Route::get('/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
     Route::post('/inventory/store', [InventoryController::class, 'store']);
+    Route::post('/inventory/change-status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+
+
+    // ROUTES EXPORTS
+    Route::get('iventory/exports/{id}', [InventoryController::class, 'exportToExcel'])->name('inventory.exports');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

@@ -44,13 +44,16 @@
                                         Creado por
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Estado
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Acciones
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($inventories as $index => $inventory)
-                                    <tr data-inventory-id="{{ $inventory->id }}">
+                                    <tr data-inventory-id="{{ $inventory->id }}" data-inventory-state="{{ $inventory->state->code }}" data-inventory-code="{{ $inventory->code }}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
@@ -88,12 +91,21 @@
                                             </span>
                                         </td>
                                         <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">
+                                                <span class="badge {{ $inventory->state->code == 'ACTIVE' ? 'bg-gradient-success' : 'bg-gradient-danger' }} rounded-pill">{{ $inventory->state->name }}</span>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
                                             <a href="{{ route('inventory.show', $inventory->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Ver Detalle" onclick="onEdit(this)">
                                                 <i class="fas fa-eye text-secondary"></i>
                                             </a>
-                                            <!-- <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Anular Inventario" onclick="onDelete(this)">
-                                                <i class="cursor-pointer fas fa-cancel text-secondary"></i>
-                                            </a> -->
+                                            <!-- Action change status -->
+                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Estado" onclick="onChangeStatus(this)">
+                                                <i class="fas fa-exchange-alt text-secondary"></i>
+                                            </a>
+                                            <a href="{{ route('inventory.exports', $inventory->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Exportar Excel" onclick="onEdit(this)">
+                                                <i class="fas fa-file-excel text-secondary"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -105,6 +117,11 @@
         </div>
     </div>
 </div>
+
+<!-- pass crtoken -->
+<script>
+    const csrfToken = @JSON(csrf_token());
+</script>
 
 <script src="{{ asset('assets/js/jquery-3.7.0.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>

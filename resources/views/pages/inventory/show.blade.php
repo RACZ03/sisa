@@ -7,14 +7,24 @@
         <div class="col-12">
             <div class="card mb-4 mx-4">
                 <div class="card-header pb-0">
-                    <div class="d-flex flex-row justify-content-between">
-                        <div class="mb-2">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                        <div class="mb-2 mb-md-0"> <!-- Utilizamos mb-2 para agregar margen inferior en dimensiones mayores o iguales a 900 -->
                             <h5 class="mb-0">
                                 {{ strtoupper($userAuth->name) }}
                             </h5>
                         </div>
+                        <div class="d-flex justify-content-md-end mt-2 mt-md-0"> <!-- Utilizamos mt-2 para agregar margen superior en dimensiones mayores o iguales a 900 -->
+                            <form action="{{ route('inventory.exports', ['id' => $inventory->id]) }}" method="get" class="mr-2"> <!-- Agregamos la clase mr-2 para separar los botones -->
+                                @csrf
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-file-excel"></i> Exportar
+                                </button>
+                            </form>
+                            <a href="{{ route('inventory') }}" class="btn btn-secondary" style="margin-left: 10px !important;">Regresar</a>
+                        </div>
                     </div>
                 </div>
+
 
                 <form class="m-4">
                     <!-- DATE -->
@@ -34,31 +44,28 @@
                     <!-- EVENT & TECNOLOGY -->
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $events:id, name -->
                             <div class="form-group">
                                 <label for="event">Evento</label>
                                 <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->event->name }}">
                              </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $technologies :id, name -->
                             <div class="form-group">
-                                <label for="technology">Tecnología</label>
-                                <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->technology->name }}">
+                                <label for="route">Ruta</label>
+                                <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->route->name }}">
                             </div>
+
                         </div>
                     </div>
                     <!-- ROUTE & TECHNICAL -->
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $routes :id, name -->
                             <div class="form-group">
-                                <label for="route">Ruta</label>
-                                <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->route->name }}">
+                                <label for="technology">Tecnología</label>
+                                <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->technology->name }}">
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $technicals :id, name -->
                             <div class="form-group">
                                 <label for="technical">Técnico</label>
                                 <input type="text" class="form-control" id="event" name="event" placeholder="Evento" disabled value="{{ $inventory->user->name }}">
@@ -100,11 +107,7 @@
                     </div>
                     <hr class="mt-2 mb-2">
                     <!-- btn guardar y cancelar, el cancelar regresar a la ruta inventory, position center -->
-                    <div class="row mt-5">
-                        <div class="col-12" style="text-align: center;">
-                            <a href="{{ route('inventory') }}" class="btn btn-secondary">Regresar</a>
-                        </div>
-                    </div>
+
 
                 </form>
             </div>

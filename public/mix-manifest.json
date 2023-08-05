@@ -8,6 +8,7 @@
     "/js/pages/event.js": "/js/pages/event.js",
     "/js/pages/inventories.js": "/js/pages/inventories.js",
     "/js/pages/materials.js": "/js/pages/materials.js",
+    "/js/pages/show_details.js": "/js/pages/show_details.js",
     "/js/pages/technologies.js": "/js/pages/technologies.js",
     "/js/pages/users.js": "/js/pages/users.js",
     "/js/plugins/jquery.inputmask.min.js": "/js/plugins/jquery.inputmask.min.js",

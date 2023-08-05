@@ -30,7 +30,6 @@
                     <!-- EVENT & TECNOLOGY -->
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $events:id, name -->
                             <div class="form-group">
                                 <label for="event">Evento</label>
                                 <select class="form-control" id="event" name="event" required>
@@ -42,7 +41,21 @@
                              </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $technologies :id, name -->
+                             <div class="form-group">
+                                <label for="route">Ruta</label>
+                                <select class="form-control" id="route" name="route" required>
+                                    <option value="" selected disabled>Seleccione una ruta</option>
+                                    @foreach ($routes as $route)
+                                        <option value="{{ $route->id }}">{{ $route->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- ROUTE & TECHNICAL -->
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
                             <div class="form-group">
                                 <label for="technology">Tecnología</label>
                                 <select class="form-control" id="technology" name="technology" required>
@@ -53,23 +66,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <!-- ROUTE & TECHNICAL -->
-                    <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $routes :id, name -->
-                            <div class="form-group">
-                                <label for="route">Ruta</label>
-                                <select class="form-control" id="route" name="route" required>
-                                    <option value="" selected disabled>Seleccione una ruta</option>
-                                    @foreach ($routes as $route)
-                                        <option value="{{ $route->id }}">{{ $route->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                            <!-- CREATE SELECT AND LOAD OPTIONS WITH VARIABLE PHP $technicals :id, name -->
                             <div class="form-group">
                                 <label for="technical">Técnico</label>
                                 <select class="form-control" id="technical" name="technical" required>
