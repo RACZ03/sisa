@@ -89,5 +89,4 @@ class Inventory extends Model
     {
         return $this->hasMany(InventoryDetail::class);
     }
-
 }

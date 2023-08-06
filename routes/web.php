@@ -14,6 +14,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +83,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/inventory/store', [InventoryController::class, 'store']);
     Route::post('/inventory/change-status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
 
+    // ROUTES FOR REPORTS
+    Route::get('reports', [ReportsController::class, 'index'])->name('reports');
+    Route::post('/reports/findData', [ReportsController::class, 'findData'])->name('reports.findData');
 
     // ROUTES EXPORTS
     Route::get('iventory/exports/{id}', [InventoryController::class, 'exportToExcel'])->name('inventory.exports');

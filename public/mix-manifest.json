@@ -16,5 +16,12 @@
     "/js/moment.min.js": "/js/moment.min.js",
     "/js/plugins/toastr.min.js": "/js/plugins/toastr.min.js",
     "/css/plugins/toastr.min.css": "/css/plugins/toastr.min.css",
-    "/css/plugins/sweetalert2.min.css": "/css/plugins/sweetalert2.min.css"
+    "/css/plugins/sweetalert2.min.css": "/css/plugins/sweetalert2.min.css",
+    "/js/pages/reports.js": "/js/pages/reports.js",
+    "/js/plugins/bootstrap-datepicker.min.js": "/js/plugins/bootstrap-datepicker.min.js",
+    "/js/plugins/daterangepicker.min.js": "/js/plugins/daterangepicker.min.js",
+    "/js/plugins/select2.min.js": "/js/plugins/select2.min.js",
+    "/css/plugins/bootstrap-datepicker3.min.css": "/css/plugins/bootstrap-datepicker3.min.css",
+    "/css/plugins/daterangepicker.min.css": "/css/plugins/daterangepicker.min.css",
+    "/css/plugins/select2.min.css": "/css/plugins/select2.min.css"
 }

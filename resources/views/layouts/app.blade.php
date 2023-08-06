@@ -48,11 +48,16 @@
     <link id="pagestyle" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
     <link id="pagestyle" href="../assets/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <link id="pagestyle" href="../assets/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <!-- import buttons.bootstrap4.min.css  -->
+    <link rel="stylesheet" href="../css/plugins/buttons.bootstrap4.min.css">
     <!-- Import toastr css -->
     <link rel="stylesheet" href="../css/plugins/toastr.min.css">
     <!-- Import sweetalert2 css -->
     <link rel="stylesheet" href="../css/plugins/sweetalert2.min.css">
-
+    <!-- Import select2 css -->
+    <link rel="stylesheet" href="../css/plugins/select2.min.css">
+    <!-- Import daterangepicker css -->
+    <link rel="stylesheet" href="../css/plugins/daterangepicker.min.css">
 </head>
 
 <body class="g-sidenav-show  bg-gray-100 {{ (\Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '')) }} ">
@@ -80,9 +85,6 @@
     <script src="../assets/js/plugins/chartjs.min.js"></script>
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="../assets/js/jquery.dataTables.min.js"></script>
-    <script src="../assets/js/dataTables.bootstrap5.min.js"></script>
 
 
   @stack('rtl')

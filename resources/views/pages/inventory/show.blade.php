@@ -115,12 +115,7 @@
     </div>
 </div>
 
-<script>
-    var details = {{ json_encode($inventory_details) }};
-</script>
-
 <script src="{{ asset('assets/js/jquery-3.7.0.js') }}"></script>
 
-<script src="{{ asset('js/pages/show_details.js') }}"></script>
 
 @endsection
