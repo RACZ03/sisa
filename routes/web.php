@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\RoutesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,11 +61,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
 
     // ROUTES FOR ROUTES
-    Route::get('routes', [EventController::class, 'index'])->name('events');
-    Route::post('/routes/store', [EventController::class, 'store']);
-    Route::put('/routes/{id}', [EventController::class, 'update']);
-    Route::delete('/routes/{id}', [EventController::class, 'destroy']);
-    Route::post('/routes/validate-unique-field', [EventController::class, 'validateUniqueField']);
+    Route::get('routes', [RoutesController::class, 'index'])->name('routes');
+    Route::post('/routes/store', [RoutesController::class, 'store']);
+    Route::put('/routes/{id}', [RoutesController::class, 'update']);
+    Route::delete('/routes/{id}', [RoutesController::class, 'destroy']);
+    Route::post('/routes/validate-unique-field', [RoutesController::class, 'validateUniqueField']);
 
     // ROUTES FOR MATERIALS
     Route::get('materials', [MaterialController::class, 'index'])->name('materials');
