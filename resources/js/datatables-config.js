@@ -28,4 +28,8 @@ const DATA_TABLE_CONFIG = {
     // others dom
     // dom: 'frtp',
     dom: '<"d-flex justify-content-between" f>t<"d-flex justify-content-end" p>',
+    // desactive sort in last column
+    columnDefs: [
+        { orderable: false, targets: -1 }
+    ],
 };

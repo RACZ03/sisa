@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TechnologyController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoutesController;
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
     // ROUTES FOR TECHNOLOGIES
-    Route::get('technologies', [TechnologyController::class, 'index'])->name('events');
+    Route::get('technologies', [TechnologyController::class, 'index'])->name('technologies');
     Route::post('/technologies/store', [TechnologyController::class, 'store']);
     Route::put('/technologies/{id}', [TechnologyController::class, 'update']);
     Route::delete('/technologies/{id}', [TechnologyController::class, 'destroy']);
@@ -67,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/routes/{id}', [RoutesController::class, 'destroy']);
     Route::post('/routes/validate-unique-field', [RoutesController::class, 'validateUniqueField']);
 
+
     // ROUTES FOR MATERIALS
     Route::get('materials', [MaterialController::class, 'index'])->name('materials');
     Route::post('/materials/store', [MaterialController::class, 'store']);
@@ -75,9 +78,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/materials/validate-unique-field', [MaterialController::class, 'validateUniqueField']);
 
     // ROUTES FOR INVENTORY
-    Route::get('inventory', function () {
-		return view('pages/inventory/index');
-	})->name('inventory');
+    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
+
+    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+    Route::get('/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+    Route::post('/inventory/store', [InventoryController::class, 'store']);
+    Route::post('/inventory/change-status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+
+    // ROUTES FOR REPORTS
+    Route::get('reports', [ReportsController::class, 'index'])->name('reports');
+    Route::post('/reports/findData', [ReportsController::class, 'findData'])->name('reports.findData');
+
+    // ROUTES EXPORTS
+    Route::get('iventory/exports/{id}', [InventoryController::class, 'exportToExcel'])->name('inventory.exports');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);
