@@ -10,8 +10,11 @@ class InventoryDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'material_id',
+        'old_stock',
         'count',
+        'new_stock',
         'series',
         'inventory_id',
         'state_id',

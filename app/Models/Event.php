@@ -12,6 +12,17 @@ class Event extends Model
     protected $fillable = [
         'code',
         'name',
+        'state_id'
     ];
+
+    /**
+     * Define la relación "belongsTo" con el modelo State.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 
 }

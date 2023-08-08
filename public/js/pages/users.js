@@ -147,7 +147,7 @@ function onCreateUser() {
 }
 
 function onEditUser(button) {
-    console.log('onEditUser');
+
     $('#newUserModalLabel').html('Editar Usuario');
     cleanModal();
     // Obtener la fila que contiene los datos del usuario
@@ -302,7 +302,6 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
 
     let url = '';
     let method = '';
-    let body = {};
 
     if ( id ) {
         url = '/users/' + id;

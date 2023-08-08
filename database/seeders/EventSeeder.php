@@ -17,6 +17,7 @@ class EventSeeder extends Seeder
             'id' => 1,
             'code' => 'LOAD',
             'name' => 'Carga',
+            'state_id' => 1, // 'ACTIVE
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -25,6 +26,7 @@ class EventSeeder extends Seeder
             'id' => 2,
             'code' => 'DEBIT',
             'name' => 'Débito',
+            'state_id' => 1, // 'ACTIVE
             'created_at' => now(),
             'updated_at' => now()
         ]);

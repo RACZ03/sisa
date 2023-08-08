@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\TechnologyController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,26 +38,57 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('profile');
 	})->name('profile');
 
-    Route::get('roles', function () {
-		return view('pages/roles/index');
-	})->name('roles');
 
-    Route::get('inventory', function () {
-		return view('pages/inventory/index');
-	})->name('inventory');
 
-    Route::get('materials', function () {
-        return view('pages/materials/index');
-    })->name('materials');
-
+    // ROUTES FOR USERS
 	Route::get('users', [UserController::class, 'index'])->name('users');
     Route::post('/users/store', [UserController::class, 'store']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-
     Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
 
+    // ROUTES FOR EVENTS
+    Route::get('events', [EventController::class, 'index'])->name('events');
+    Route::post('/events/store', [EventController::class, 'store']);
+    Route::put('/events/{id}', [EventController::class, 'update']);
+    Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
+
+    // ROUTES FOR TECHNOLOGIES
+    Route::get('technologies', [TechnologyController::class, 'index'])->name('technologies');
+    Route::post('/technologies/store', [TechnologyController::class, 'store']);
+    Route::put('/technologies/{id}', [TechnologyController::class, 'update']);
+    Route::delete('/technologies/{id}', [TechnologyController::class, 'destroy']);
+    Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
+
+    // ROUTES FOR ROUTES
+    Route::get('routes', [EventController::class, 'index'])->name('routes');
+    Route::post('/routes/store', [EventController::class, 'store']);
+    Route::put('/routes/{id}', [EventController::class, 'update']);
+    Route::delete('/routes/{id}', [EventController::class, 'destroy']);
+    Route::post('/routes/validate-unique-field', [EventController::class, 'validateUniqueField']);
+
+    // ROUTES FOR MATERIALS
+    Route::get('materials', [MaterialController::class, 'index'])->name('materials');
+    Route::post('/materials/store', [MaterialController::class, 'store']);
+    Route::put('/materials/{id}', [MaterialController::class, 'update']);
+    Route::delete('/materials/{id}', [MaterialController::class, 'destroy']);
+    Route::post('/materials/validate-unique-field', [MaterialController::class, 'validateUniqueField']);
+
+    // ROUTES FOR INVENTORY
+    Route::get('inventory', [InventoryController::class, 'index'])->name('inventory');
+
+    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+    Route::get('/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+    Route::post('/inventory/store', [InventoryController::class, 'store']);
+    Route::post('/inventory/change-status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+
+    // ROUTES FOR REPORTS
+    Route::get('reports', [ReportsController::class, 'index'])->name('reports');
+    Route::post('/reports/findData', [ReportsController::class, 'findData'])->name('reports.findData');
+
+    // ROUTES EXPORTS
+    Route::get('iventory/exports/{id}', [InventoryController::class, 'exportToExcel'])->name('inventory.exports');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
 	Route::get('/user-profile', [InfoUserController::class, 'create']);

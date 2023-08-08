@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name', 30)->nullable(false);
+            $table->unsignedBigInteger('state_id')->nullable(); // Campo state_id
             $table->timestamps();
+
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('SET NULL');
         });
     }
 

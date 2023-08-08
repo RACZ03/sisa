@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             UserSeeder::class,
             TechnologySeeder::class,
+            MaterialSeeder::class,
+            RouteSeeder::class,
         ]);
     }
 }

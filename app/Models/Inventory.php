@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
-
+    //define la tabla del modelo
     protected $fillable = [
         'code',
         'date',
@@ -89,5 +89,4 @@ class Inventory extends Model
     {
         return $this->hasMany(InventoryDetail::class);
     }
-
 }

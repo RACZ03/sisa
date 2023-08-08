@@ -5,7 +5,7 @@ const DATA_TABLE_CONFIG = {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
         "sZeroRecords": "No se encontraron resultados",
-        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sEmptyTable": "No se encontraron resultados",
         "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
         "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
         "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
@@ -28,4 +28,8 @@ const DATA_TABLE_CONFIG = {
     // others dom
     // dom: 'frtp',
     dom: '<"d-flex justify-content-between" f>t<"d-flex justify-content-end" p>',
+    // desactive sort in last column
+    columnDefs: [
+        { orderable: false, targets: -1 }
+    ],
 };
