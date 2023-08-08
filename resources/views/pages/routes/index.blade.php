@@ -150,6 +150,7 @@
 <script>
     // Creamos una variable global para almacenar el valor de csrf_token
     window.csrfToken = '{{ csrf_token() }}';
+    let routesList = @json($routes);
 </script>
 
 <script src="{{ asset('js/pages/route.js') }}"></script>

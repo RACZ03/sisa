@@ -34,17 +34,31 @@ class UserController extends Controller
         $request->validate([
             'field' => ['required', Rule::in(['email', 'phone'])],
             'value' => 'required',
+            'id' => 'nullable|integer'
         ]);
 
         $field = $request->input('field');
         $value = $request->input('value');
+        $id = $request->input('id');
 
-        if ($field === 'email') {
-            $exists = User::where('email', $value)->exists();
-        } elseif ($field === 'phone') {
-            $exists = User::where('phone', 'LIKE', '%' . $value . '%')->exists();
+        $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
+
+        if ( $id ) {
+            if ($field === 'email') {
+                $exists = User::where('email', $value)->where('state_id', '=', $state->id )->where('id', '<>', $id)->exists();
+            } elseif ($field === 'phone') {
+                $exists = User::where('phone', 'LIKE', '%' . $value . '%')->where('state_id', '=', $state->id )->where('id', '<>', $id)->exists();
+            } else {
+                return response()->json(['error' => 'Invalid field.']);
+            }
         } else {
-            return response()->json(['error' => 'Invalid field.']);
+            if ($field === 'email') {
+                $exists = User::where('email', $value)->where('state_id', '=', $state->id )->exists();
+            } elseif ($field === 'phone') {
+                $exists = User::where('phone', 'LIKE', '%' . $value . '%')->where('state_id', '=', $state->id )->exists();
+            } else {
+                return response()->json(['error' => 'Invalid field.']);
+            }
         }
 
         return response()->json(['exists' => $exists]);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 200)->unique();
+            $table->string('code', 200)->nullable(false);
             $table->date('date')->nullable(false);
             $table->unsignedBigInteger('event_id')->nullable();
             $table->unsignedBigInteger('technology_id')->nullable();

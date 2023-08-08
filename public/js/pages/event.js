@@ -13,7 +13,8 @@ $(document).ready(function() {
     codeInput.on('blur', function () {
         // get value
         const codeInputValue = codeInput.val();
-        validateField('code', codeInputValue, codeInput);
+        const id = $('#event_id').val();
+        validateField('code', codeInputValue, id, codeInput);
     });
 
 
@@ -23,7 +24,7 @@ function convertToUpperCase(input) {
     input.value = input.value.toUpperCase();
 }
 
-function validateField(field, value, elementInput) {
+function validateField(field, value, id, elementInput) {
 
     if ( value === '' ) {
         return
@@ -41,6 +42,7 @@ function validateField(field, value, elementInput) {
         data: {
             field: field,
             value: value,
+            id: id
         },
         success: function(response) {
             if (response.exists) {

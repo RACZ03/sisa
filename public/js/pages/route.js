@@ -2,7 +2,6 @@ const csrfToken = window.csrfToken;
 let validCode = true;
 
 $(document).ready(function() {
-
     $('#route-table').DataTable({
         ...DATA_TABLE_CONFIG,
     });
@@ -13,7 +12,8 @@ $(document).ready(function() {
     codeInput.on('blur', function () {
         // get value
         const codeInputValue = codeInput.val();
-        validateField('code', codeInputValue, codeInput);
+        const id = $('#route_id').val();
+        validateField('code', codeInputValue, id, codeInput);
     });
 
 });
@@ -22,7 +22,7 @@ function convertToUpperCase(input) {
     input.value = input.value.toUpperCase();
 }
 
-function validateField(field, value, elementInput) {
+function validateField(field, value, id, elementInput) {
 
     if ( value === '' ) {
         return
@@ -40,6 +40,7 @@ function validateField(field, value, elementInput) {
         data: {
             field: field,
             value: value,
+            id: id
         },
         success: function(response) {
             if (response.exists) {
@@ -78,8 +79,7 @@ function onEdit(button) {
     const routeCode = row.dataset.routeCode;
     const routeName = row.dataset.routeName;
     const routeDescription = row.dataset.routeDescription;
-    const user = row.dataset.user;
-
+    const user = row.dataset.routeUser;
 
    //select option
     $('#user').val(user);
@@ -89,7 +89,7 @@ function onEdit(button) {
     $('#code').val(routeCode);
     $('#name').val(routeName);
     $('#description').val(routeDescription);
-    
+
 
     $('#newRouteModal').modal('show');
 
@@ -115,7 +115,7 @@ function onDelete(button) {
             // Realizar petición AJAX para eliminar al usuario
             $.ajax({
                 type: 'DELETE',
-                url: '/users/'+routeId,
+                url: '/routes/'+routeId,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
@@ -164,6 +164,19 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
         $('#name').css('border-color', '#ced4da');
     }
 
+    // si es nuevo registro validar que el technico o user_id no exista en la lista routesList
+    if ( !id || id === '' || id === null || id === undefined) {
+        let find = routesList.find(route => route.user_id == user);
+        if ( find ) {
+            toastr.error('El usuario ya tiene asignada la ruta: ' + find.name);
+            // border radius red
+            $('#user').css('border-color', 'red');
+            return;
+        } else {
+            // borde default bootstrap;
+            $('#user').css('border-color', '#ced4da');
+        }
+    }
 
     if ( !validCode ) {
         toastr.error('El código de la ruta ya existe.');
@@ -172,7 +185,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
 
     let url = '';
     let method = '';
-    let body = {};
 
     if ( id ) {
         url = '/routes/' + id;
@@ -231,6 +243,6 @@ function cleanModal() {
     $('#description').css('border-color', '#ced4da');
     $('#user').css('border-color', '#ced4da');
 
-    
+
 }
 

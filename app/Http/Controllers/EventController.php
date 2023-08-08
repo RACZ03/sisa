@@ -28,13 +28,20 @@ class EventController extends Controller
         $request->validate([
             'field' => ['required', Rule::in(['code'])],
             'value' => 'required',
+            'id' => 'nullable|integer'
         ]);
 
         $field = $request->input('field');
         $value = $request->input('value');
+        $id = $request->input('id');
 
+        $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
 
-        $exists = Event::where('code', $value)->exists();
+        if ($id) {
+            $exists = Event::where('code', $value)->where('state_id', '=', $state->id )->where('id', '<>', $id)->exists();
+        } else {
+            $exists = Event::where('code', $value)->where('state_id', '=', $state->id )->exists();
+        }
 
         return response()->json(['exists' => $exists]);
     }

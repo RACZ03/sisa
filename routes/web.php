@@ -31,9 +31,11 @@ use App\Http\Controllers\RoutesController;
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', [HomeController::class, 'home']);
-	Route::get('dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
+    Route::get('dashboard', [HomeController::class, 'home'])->name('dashboard');
+
+	// Route::get('dashboard', function () {
+	// 	return view('dashboard');
+	// })->name('dashboard');
 
 	Route::get('profile', function () {
 		return view('profile');
@@ -49,11 +51,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
 
     // ROUTES FOR EVENTS
-    Route::get('events', [EventController::class, 'index'])->name('events');
-    Route::post('/events/store', [EventController::class, 'store']);
-    Route::put('/events/{id}', [EventController::class, 'update']);
-    Route::delete('/events/{id}', [EventController::class, 'destroy']);
-    Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
+    // Route::get('events', [EventController::class, 'index'])->name('events');
+    // Route::post('/events/store', [EventController::class, 'store']);
+    // Route::put('/events/{id}', [EventController::class, 'update']);
+    // Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    // Route::post('/events/validate-unique-field', [EventController::class, 'validateUniqueField']);
 
     // ROUTES FOR TECHNOLOGIES
     Route::get('technologies', [TechnologyController::class, 'index'])->name('technologies');

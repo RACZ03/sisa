@@ -68,14 +68,16 @@ $(document).ready(function() {
     phoneInput.on('blur', function () {
         // get value
         const phoneInputValue = phoneInput.val();
-        validateField('phone', phoneInputValue, phoneInput);
+        const id = $('#user_id').val();
+        validateField('phone', phoneInputValue, id, phoneInput);
     });
 
     // validations email exists
     emailInput.on('blur', function () {
         // get value
         const emailInputValue = emailInput.val();
-        validateField('email', emailInputValue, emailInput);
+        const id = $('#user_id').val();
+        validateField('email', emailInputValue, id, emailInput);
     });
 
     // validations name exists
@@ -91,7 +93,7 @@ $(document).ready(function() {
 });
 
 
-function validateField(field, value, elementInput) {
+function validateField(field, value, id, elementInput) {
 
     if ( value === '' ) {
         return
@@ -113,6 +115,7 @@ function validateField(field, value, elementInput) {
         data: {
             field: field,
             value: value,
+            id: id
         },
         success: function(response) {
             if (response.exists) {

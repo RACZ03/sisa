@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('technologies', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 200)->unique();
+            $table->string('code', 200)->nullable(false);
             $table->string('name');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('state_id')->nullable();
