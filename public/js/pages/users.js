@@ -10,7 +10,9 @@ $(document).ready(function() {
     });
 
     const passwordInput = $('#password');
+    const passwordInputModal = $('#password_modal');
     const confirmPasswordInput = $('#password_confirmation');
+    const confirmPasswordInputModal = $('#password_confirmation_modal');
     const phoneInput = $('#phone');
     const emailInput = $('#email');
     const nameInput = $('#name');
@@ -61,6 +63,28 @@ $(document).ready(function() {
         } else {
             confirmPasswordInput.css('border-color', 'red');
             passwordInput.css('border-color', 'red');
+        }
+    });
+
+    confirmPasswordInputModal.on('blur', function () {
+        const passwordValue = passwordInputModal.val();
+        const confirmPasswordValue = confirmPasswordInputModal.val();
+        const minLength = 6;
+
+        // Verificar que ambas contraseñas tengan al menos 6 caracteres
+        if (passwordValue.length < minLength || confirmPasswordValue.length < minLength) {
+            toastr.error('La contraseña debe tener al menos 6 caracteres.');
+            confirmPasswordInputModal.css('border-color', 'red');
+            return;
+        }
+
+        // Verificar si las contraseñas son iguales
+        if (passwordValue === confirmPasswordValue) {
+            confirmPasswordInputModal.css('border-color', 'green');
+            passwordInputModal.css('border-color', 'green');
+        } else {
+            confirmPasswordInputModal.css('border-color', 'red');
+            passwordInputModal.css('border-color', 'red');
         }
     });
 
@@ -351,7 +375,97 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
             }
         }
     });
-})
+});
+
+document.getElementById('savePasswordBtn').addEventListener('click', function () {
+
+    // get id, password, password_confirmation
+    const id = $('#user_id_modal').val();
+    const passwordInput = $('#password_modal');
+    const confirmPasswordInput = $('#password_confirmation_modal');
+
+    // validar que no esten vacios los campos
+    if (passwordInput.val() === '' || confirmPasswordInput.val() === '') {
+        toastr.error('Los campos de contraseña no pueden estar vacíos.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    // validar que la contraseña y confirmacion de contraseña su longitud sea mayor a 6 caracteres y que sean iguales
+    if (passwordInput.val().length < 6 || confirmPasswordInput.val().length < 6) {
+        toastr.error('La contraseña debe tener al menos 6 caracteres.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    // Verificar si las contraseñas son iguales
+    if (passwordInput.val() !== confirmPasswordInput.val()) {
+        toastr.error('Las contraseñas no coinciden.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/users/change-password/' + id,
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            password: passwordInput.val(),
+            password_confirmation: confirmPasswordInput.val(),
+        },
+        success: function(response) {
+            // hide modal
+            $('#changePasswordModal').modal('hide');
+            if ( response.status == 200 ) {
+                toastr.success(response.message);
+                cleanModal();
+                setTimeout(function () {
+                    window.location.href = '/users';
+                }, 1000);
+            } else {
+                toastr.error(response.message);
+            }
+        }, error: function(e) {
+            if ( e?.responseJSON?.message ) {
+                toastr.error(e.responseJSON.message);
+            } else if ( e?.message ) {
+                toastr.error(e.message);
+            } else {
+                toastr.error('Ha ocurrido un error al guardar el usuario.')
+            }
+        }
+    });
+
+
+});
+
+function onChangePassword(button) {
+
+    let row = button.closest('tr');
+    let userId = row.dataset.userId;
+
+    // clear input password_modal and password_confirmation_modal
+    $('#password_modal').val('');
+    $('#password_confirmation_modal').val('');
+    // asignar el id del usuario al input hidden
+    $('#user_id_modal').val(userId);
+
+    $('#changePasswordModal').modal('show');
+}
 
 
 function cleanModal() {

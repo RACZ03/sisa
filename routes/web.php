@@ -33,9 +33,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::get('dashboard', [HomeController::class, 'home'])->name('dashboard');
 
-	// Route::get('dashboard', function () {
-	// 	return view('dashboard');
-	// })->name('dashboard');
 
 	Route::get('profile', function () {
 		return view('profile');
@@ -49,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
+    Route::post('/users/change-password/{id}', [UserController::class, 'changePassword'])->name('users.changePassword');
+
 
     // ROUTES FOR EVENTS
     // Route::get('events', [EventController::class, 'index'])->name('events');
@@ -95,8 +94,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('iventory/exports/{id}', [InventoryController::class, 'exportToExcel'])->name('inventory.exports');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
-	Route::get('/user-profile', [InfoUserController::class, 'create']);
-	Route::post('/user-profile', [InfoUserController::class, 'store']);
+	// Route::get('/user-profile', [InfoUserController::class, 'create']);
+	// Route::post('/user-profile', [InfoUserController::class, 'store']);
     Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');

@@ -74,6 +74,10 @@
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Usuario" onclick="onDelete(this)">
                                                 <i class="cursor-pointer fas fa-trash text-secondary"></i>
                                             </a>
+                                            <!-- action change password -->
+                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Contraseña" onclick="onChangePassword(this)">
+                                                <i class="cursor-pointer fas fa-key text-secondary"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -135,6 +139,38 @@
                         <button type="button" class="btn btn-primary" id="saveUserBtn">Guardar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FORM ADD CHANGE PASSWORD -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- input id hidden -->
+                <input type="hidden" id="user_id_modal" name="user_id_modal" value="">
+                <!-- div password -->
+                <div class="row" id="passDiv">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password_modal" minlength="6" name="password_modal" autocomplete="password_modal" required>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                        <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="password_confirmation_modal" minlength="6" name="password_confirmation_modal" autocomplete="password_confirmation_modal" required>
+                    </div>
+                </div>
+                <!-- div password -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="savePasswordBtn">Guardar</button>
+                </div>
             </div>
         </div>
     </div>

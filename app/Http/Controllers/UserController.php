@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewPasswordMail;
+use App\Mail\UpdatePasswordMail;
 
 class UserController extends Controller
 {
@@ -86,7 +90,16 @@ class UserController extends Controller
                 'state_id' => State::where('code', 'ACTIVE')->value('id'),
             ]);
 
-            return response()->json(['message' => 'Usuario guardado correctamente.', 'status' => 200 ], 200);
+            try {
+
+                Mail::to($user->email)->send(new NewPasswordMail($user->email, $validatedData['password']));
+
+                return response()->json(['message' => 'Usuario guardado correctamente. Se envió un correo electrónico.', 'status' => 200 ], 200);
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Usuario guardado correctamente. No se pudo enviar el correo electrónico.', 'status' => 200 ], 200);
+            }
+
+
         } catch (QueryException $e) {
             // Verificar si el error fue causado por una clave única duplicada
             if ($e->getCode() == 23000) {
@@ -177,6 +190,57 @@ class UserController extends Controller
         } catch (QueryException $e) {
             // Si ocurre una excepción de validación, devolver los errores de validación
             return response()->json(['message' => 'Error al eliminar el usuario.', 'error' => $e, 'status' => 400], 400);
+        }
+    }
+
+    // create controller changePassword, receive id, password, password_confirmation, validate state ACTIVE and return message
+    public function changePassword(Request $request, $id)
+    {
+        try {
+
+
+            $state = State::where('code', 'ACTIVE')->first();
+            // Obtener el usuario que se desea actualizar
+            $user = User::where('id', $id)->where('state_id', $state->id)->first();
+
+            if (!$user) {
+                return response()->json(['message' => 'El usuario no existe.', 'status' => 400], 400);
+            }
+
+            // Validar los campos del formulario antes de actualizar
+            $validatedData = $request->validate([
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required|string|min:6',
+            ]);
+
+            // Actualizar los datos del usuario
+            $user->password = Hash::make($validatedData['password']);
+            $user->updated_at = now();
+            $user->save();
+
+            // validate if user id is equal to auth user id and logout
+            if ($id == Auth::user()->id) {
+                Auth::logout();
+            }
+
+            // Enviar correo electrónico
+            try {
+
+                Mail::to($user->email)->send(new UpdatePasswordMail($user->email, $validatedData['password']));
+                return response()->json(['message' => 'Contraseña actualizada correctamente. Se envió un correo electrónico.', 'status' => 200], 200);
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Contraseña actualizada correctamente. No se pudo enviar el correo electrónico.', 'status' => 200], 200);
+            }
+
+        } catch (ValidationException $e) {
+            // Manejar errores de validación
+            return response()->json(['message' => 'Error de validación.', 'errors' => $e->errors(), 'status' => 400], 400);
+        } catch (QueryException $e) {
+            // Manejar errores de consulta
+            return response()->json(['message' => 'Error al actualizar la contraseña.', 'error' => $e, 'status' => 400], 400);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            return response()->json(['message' => 'Error al enviar el correo electrónico.', 'error' => $e->getMessage(), 'status' => 400], 400);
         }
     }
 
