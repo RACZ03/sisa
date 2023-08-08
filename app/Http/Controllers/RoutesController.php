@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Route;
 use App\Models\State;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -30,15 +31,15 @@ class RoutesController extends Controller
 
    public function validateUniqueField(Request $request)
    {
-      $request->validate([
-         'field' => ['required', Route::in(['code'])],
-         'value' => 'required',
-      ]);
+        $request->validate([
+             'field' => ['required', Rule::in(['code'])],
+             'value' => 'required',
+        ]);
+    
+        $field = $request->input('field');
+        $value = $request->input('value');
 
-      $field = $request->input('field');
-      $value = $request->input('value');
-
-      $exists = Route::where('code', $value)->exists();
+        $exists = Route::where('code', $value)->exists();
 
         return response()->json(['exists' => $exists]);
    }
@@ -51,6 +52,7 @@ class RoutesController extends Controller
          'code' => 'required|string|max:255',
          'name' => 'required|string|max:255',
          'description' => 'required|string|max:255',
+         'user' => 'required|exists:users,id',
       ]);
 
       try{
@@ -60,6 +62,7 @@ class RoutesController extends Controller
                 'name' => $validatedData['name'],
                 'description' => $validatedData['description'],
                 'state_id' => State::where('code', '=', 'ACTIVE')->first()->id,
+                'user_id' => $validatedData['user'],
             ]);
         return response()->json(['message' => 'Ruta creada correctamente.', 'status' => 200], 200);
       }
@@ -81,37 +84,37 @@ class RoutesController extends Controller
 
 public function update(Request $request, $id)
 {
-    // Validar los campos del formulario antes de guardar
-    $validatedData = $request->validate([
-        'code' => 'required|string|max:255',
-        'name' => 'required|string|max:255',
-        'description' => 'required|string|max:255',
-    ]);
-
     try {
-        $route = Route::find($id);
+        //obtener la ruta que se va a actualizar
+        $route = Route::findOrfail($id);
+
+        // Validar los campos del formulario antes de guardar
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'user' => 'required|exists:users,id',
+        ]);
+        //actualizar los campos de la ruta
         $route->code = $validatedData['code'];
         $route->name = $validatedData['name'];
         $route->description = $validatedData['description'];
+        $route->user_id = $validatedData['user'];
+        $route->update_at = now();
         $route->save();
 
         return response()->json(['message' => 'Ruta actualizada correctamente.', 'status' => 200], 200);
-
-    } catch (QueryException $e) {
-        // Verificar si el error fue causado por una clave única duplicada
-        if ($e->getCode() == 23000) {
-            // Analizar el mensaje de error para determinar si el code is duplicado
-            if (strpos($e->getMessage(), 'code')) {
-                return response()->json(['message' => 'El código de la ruta ya existe.'], 400);
-            } else {
-                // Si no es una clave única duplicada, se devuelve el mensaje genérico de error
-                return response()->json(['message' => 'Error al actualizar la ruta.', 'error' => $e], 400);
+    }catch(ValidationException $e){
+        if($e -> getCode()==23000){
+            if(strpos($e->getMessage(),'code'))
+            {
+               return response()->json(['message' => 'El código de la ruta ya existe.', 'status' => 400], 400);
+            }else{
+               return response()->json(['message' => 'Error al actualizar la ruta.', 'error'=> $e],400);
             }
-
-        } else {
-            // Si no es una clave única duplicada, se devuelve el mensaje genérico de error
-            return response()->json(['message' => 'Error al actualizar la ruta.', 'error' => $e], 400);
-        }
+          }else{
+               return response()->json(['message' => 'Error al actualizar la ruta.', 'error'=> $e],400);
+          }
     }
 }
 

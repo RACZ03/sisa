@@ -61,7 +61,7 @@ function validateField(field, value, elementInput) {
 
 function onCreate() {
     $('#newRouteModalLabel').html('Nuevo Registro');
-    $('#newTRouteModal').modal('show');
+    $('#newRouteModal').modal('show');
 
     cleanModal();
 }
@@ -74,22 +74,25 @@ function onEdit(button) {
     const row = button.closest('tr');
 
     // Obtener los valores de los atributos data- correspondientes
-    const routeId = row.children[0].getAttribute('data-route-id');
-    const routeCode = row.children[1].getAttribute('data-route-code');
-    const routeName = row.children[2].getAttribute('data-route-name');
-    const routeDescription = row.children[3].getAttribute('data-route-description');
+    const routeId = row.dataset.routeId;
+    const routeCode = row.dataset.routeCode;
+    const routeName = row.dataset.routeName;
+    const routeDescription = row.dataset.routeDescription;
+    const user = row.dataset.user;
 
 
-    // Llenar el modal con los valores del usuario
-    document.getElementById('route_id').value = routeId;
-    document.getElementById('code').value = routeCode;
-    document.getElementById('name').value = routeName;
-    document.getElementById('description').value = routeDescription;
+   //select option
+    $('#user').val(user);
 
+    //llenar el modal con los valores
+    $('#route_id').val(routeId);
+    $('#code').val(routeCode);
+    $('#name').val(routeName);
+    $('#description').val(routeDescription);
+    
 
-
-    // Abrir el modal de edición
     $('#newRouteModal').modal('show');
+
 }
 
 function onDelete(button) {
@@ -139,6 +142,7 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
     const code = $('#code').val();
     const name = $('#name').val();
     const description = $('#description').val();
+    const user = $('#user').val();
 
     // validar que el campo de código no esté vacío
     if (code === '') {
@@ -188,6 +192,7 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
             code: code,
             name: name,
             description: description,
+            user: user,
         },
         success: function(response) {
             // hide modal
@@ -218,5 +223,14 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
 function cleanModal() {
     $('#code').val('');
     $('#name').val('');
+    $('#description').val('');
+    $('#route_id').val('');
+    $('#user').val('');
+    $('#code').css('border-color', '#ced4da');
+    $('#name').css('border-color', '#ced4da');
+    $('#description').css('border-color', '#ced4da');
+    $('#user').css('border-color', '#ced4da');
+
+    
 }
 

@@ -46,7 +46,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $index => $user)
-                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id }}">
+                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id}}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
