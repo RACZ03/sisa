@@ -289,7 +289,7 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
     // validar que la contraseña y confirmacion de contraseña su longitud sea mayor a 6 caracteres y que sean iguales
     const passwordValue = passwordInput.val();
     const confirmPasswordValue = confirmPasswordInput.val();
-    const minLength = 8;
+    const minLength = 6;
 
     if ( id === '' || id === null || id === undefined || id == 0 ) {
         // Verificar que ambas contraseñas tengan al menos 6 caracteres

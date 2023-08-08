@@ -66,7 +66,7 @@ $(document).ready(function () {
 
         // clean table
         $('#tablaMateriales tbody').empty();
-        console.log($(this).val());
+        // console.log($(this).val());
         // Obtener el ID de la tecnologia seleccionada
         const technologyId = $(this).val();
         // Habilitar el select de materiales
@@ -112,7 +112,7 @@ $(document).ready(function () {
         // $('#technical').prop('disabled', false);
         // buscar ruta en la lista routes
         let route = routes.find(r => r.id == routeId);
-        console.log(route);
+
         // obtener technical_id
         // cargar los tecnicos en el select de tecnicos
         $('#technical').empty();
@@ -284,7 +284,7 @@ $(document).ready(function () {
                     $(`#cantidad-${index+1}`).addClass('border-success');
                 }
 
-
+                material.series = [];
                 // obtener las series existentes en la posicion del index y segun la cantidad
                 for (let i = 0; i < cantidad; i++) {
                     // fin input series by series-${position}-${i}
@@ -301,15 +301,15 @@ $(document).ready(function () {
                         $(series).addClass('border-success');
                     }
                     // buscar si la serie ya existe en la lista material.series
-                    let serie = material?.series?.find(s => s == series.val());
+                    // let serie = material?.series?.find(s => s == series.val());
                     // si serie no existe, agregarla
-                    if (!serie) {
+                    // if (!serie) {
                         let value = series.val();
                         if ( value == '' || value == null || value == undefined ) {
                             return
                         }
                         material.series.push(series.val());
-                    }
+                    // }
                 }
 
             } else {
@@ -366,12 +366,14 @@ $(document).ready(function () {
                         let serie = $(`#series-${position}-${index}`).val();
                         material.series[index] = serie;
 
-                        if (repeatedSeries.includes(material.series[index])) {
-                            $(`#series-${position}-${index}`).addClass('border-danger');
-                            band = true;
-                        } else {
-                            $(`#series-${position}-${index}`).removeClass('border-danger');
-                            $(`#series-${position}-${index}`).addClass('border-success');
+                        if (repeatedSeries !== undefined && repeatedSeries !== null) {
+                            if (repeatedSeries.includes(material.series[index])) {
+                                $(`#series-${position}-${index}`).addClass('border-danger');
+                                band = true;
+                            } else {
+                                $(`#series-${position}-${index}`).removeClass('border-danger');
+                                $(`#series-${position}-${index}`).addClass('border-success');
+                            }
                         }
                     });
                 }

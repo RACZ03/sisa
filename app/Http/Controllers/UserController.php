@@ -27,7 +27,7 @@ class UserController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        $roles = Role::where('code', '!=', 'SUERADMIN')->get();
+        $roles = Role::where('code', '!=', 'SUPERADMIN')->get();
 
         // load the view and pass the users
         return view('pages/users/index', ['users' => $users, 'roles' => $roles]);
@@ -75,8 +75,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|email',
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|string|min:6',
             'role' => 'required|exists:roles,id',
         ]);
 
@@ -130,7 +130,7 @@ class UserController extends Controller
                 'name' => 'required|string|max:255',
                 'phone' => 'required|string|max:255|unique:users,phone,' . $user->id,
                 'email' => 'required|email|unique:users,email,' . $user->id,
-                'password' => 'nullable|string|min:8|confirmed',
+                // 'password' => 'nullable|string|min:6|confirmed',
                 'role' => 'required|exists:roles,id',
             ]);
 
