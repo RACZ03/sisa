@@ -485,3 +485,54 @@ function cleanModal() {
 
 
 
+function onChangeState(button) {
+    const row = button.closest('tr');
+
+    // Obtener los valores de los atributos data- correspondientes
+    const user = row.dataset.userId;
+    const code = row.dataset.userState;
+    const userName = row.dataset.userName;
+
+    var newStatus = code === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    var message = '';
+    if (newStatus === 'ACTIVE') {
+        message = `¿Estás seguro que deseas "Activar" el usuario ${userName}?`;
+    } else {
+        message = `¿Estás seguro que deseas "Inactivar" el usuario ${userName}?`;
+    }
+
+    // sweet alert
+    Swal.fire({
+        // title: '¿Estás seguro?',
+        text: message,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/users/change-status/${user}`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (response) {
+                    // Mostrar notificación Toastr con el mensaje de respuesta
+                    toastr.success(response.message);
+                    // Recargar la página
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // En caso de error, mostrar notificación Toastr con el mensaje de error
+                    toastr.error('Ha ocurrido un error al cambiar el estado del registro.');
+                },
+            });
+        }
+    }, function (dismiss) {
+        if (dismiss === 'cancel') {
+            toastr.warning('No se ha realizado ningún cambio.');
+        }
+    });
+
+}

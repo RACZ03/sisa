@@ -20,9 +20,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
+        $stateInactive = DB::table('states')->where('code', '=', 'INACTIVE')->first();
+
         $role = DB::table('roles')->where('code', '=', 'SUPERADMIN')->first();
 
         $users = User::where('state_id', '=', $state->id )
+                    ->orWhere('state_id', '=', $stateInactive->id )
                     ->where('role_id', '!=', $role->id)
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -168,6 +171,45 @@ class UserController extends Controller
                 // Si no es una clave única duplicada, se devuelve el mensaje genérico de error
                 return response()->json(['message' => 'Error al actualizar el usuario.', 'error' => $e, 'status' => 400], 400);
             }
+        }
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        try {
+            // Find user
+            $user = User::find($id);
+            // Get code state
+            $state = State::where('id', $user->state_id)->firstOrFail();
+
+            // Verify if code is ACTIVE
+            if ($state->code == 'ACTIVE') {
+                // Get the ID of the INACTIVE state
+                $stateInactive = State::where('code', 'INACTIVE')->first();
+                $user->state_id = $stateInactive->id;
+                $user->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'El estado del registro se desactivó correctamente.'
+                ]);
+            } else {
+                // Get the ID of the ACTIVE state
+                $stateActive = State::where('code', 'ACTIVE')->first();
+                $user->state_id = $stateActive->id;
+                $user->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'El estado del registro se activó correctamente.'
+                ]);
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Error al cambiar el estado del registro.',
+                'error' => $e
+            ]);
         }
     }
 

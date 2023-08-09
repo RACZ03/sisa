@@ -28,7 +28,7 @@ class InventoryController extends Controller
     {
         // get states code ACTIVE and INCACTIVE
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
-        $stateInactive = DB::table('states')->where('code', '=', 'INACTIVE')->first();
+        $stateInactive = DB::table('states')->where('code', '=', 'CANCELLED')->first();
         // get inventory data order by created_at desc and state active and inactive
         $inventories = Inventory::where('state_id', $state->id)->orWhere('state_id', $stateInactive->id)->orderBy('created_at', 'desc')->get();
 
@@ -178,7 +178,7 @@ class InventoryController extends Controller
             // Verify if code is ACTIVE
             if ($state->code == 'ACTIVE') {
                 // Get the ID of the INACTIVE state
-                $stateInactive = State::where('code', 'INACTIVE')->first();
+                $stateInactive = State::where('code', 'CANCELLED')->first();
                 $inventory->state_id = $stateInactive->id;
                 $inventory->save();
 

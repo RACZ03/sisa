@@ -40,13 +40,16 @@
                                         Fecha Creación
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Estado
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Acciones
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $index => $user)
-                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id}}">
+                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id}}" data-user-state="{{ $user->state->code }}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
@@ -68,13 +71,31 @@
                                             </span>
                                         </td>
                                         <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">
+                                                @if ($user->state->code == 'ACTIVE')
+                                                    <span class="badge badge-sm bg-gradient-success">Activo</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Inactivo</span>
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Editar Usuario" onclick="onEditUser(this)">
                                                 <i class="fas fa-user-edit text-secondary"></i>
                                             </a>
+                                            <!-- ACTION CHANGE STATE -->
+                                            @if ($user->state->code == 'ACTIVE')
+                                                <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Desactivar Usuario" onclick="onChangeState(this)">
+                                                    <i class="cursor-pointer fas fa-user-times text-secondary"></i>
+                                                </a>
+                                            @else
+                                                <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Activar Usuario" onclick="onChangeState(this)">
+                                                    <i class="cursor-pointer fas fa-user-check text-secondary"></i>
+                                                </a>
+                                            @endif
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Usuario" onclick="onDelete(this)">
                                                 <i class="cursor-pointer fas fa-trash text-secondary"></i>
                                             </a>
-                                            <!-- action change password -->
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Contraseña" onclick="onChangePassword(this)">
                                                 <i class="cursor-pointer fas fa-key text-secondary"></i>
                                             </a>

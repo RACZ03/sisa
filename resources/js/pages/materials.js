@@ -76,14 +76,14 @@ function onEdit(button) {
     cleanModal();
     // Obtener la fila que contiene los datos del material a editar
     const row = button.closest('tr');
-    console.log(row);
+
     // propiedades son: technology_id, code, name, description, stock, has_series
     const materialId = row.dataset.materialId;
     const code = row.dataset.materialCode;
     const name = row.dataset.materialName;
     const description = row.dataset.materialDescription;
     const stock = row.dataset.materialStock;
-    const has_series = row.dataset.materialHas_series;
+    const has_series = row.dataset.materialHasSeries;
 
     // Llenar el formulario con los datos del material
     $('#material_id').val(materialId);
@@ -93,7 +93,7 @@ function onEdit(button) {
     $('#stockMaterial').val(stock);
 
     // check has_series
-    if (has_series === '1') {
+    if (has_series === '1' || has_series === 1) {
         $('#has_seriesMaterial').prop('checked', true);
     } else {
         $('#has_seriesMaterial').prop('checked', false);
@@ -230,7 +230,7 @@ document.getElementById('saveMaterialBtn').addEventListener('click', function ()
         stock: stock,
         has_series: has_series
     };
-    console.log(body);
+
     $.ajax({
         type: method,
         url: url,

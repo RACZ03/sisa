@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::post('/users/validate-unique-field', [UserController::class, 'validateUniqueField']);
     Route::post('/users/change-password/{id}', [UserController::class, 'changePassword'])->name('users.changePassword');
-
+    Route::post('/users/change-status/{id}', [UserController::class, 'changeStatus'])->name('users.changeStatus');
 
     // ROUTES FOR EVENTS
     // Route::get('events', [EventController::class, 'index'])->name('events');
