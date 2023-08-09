@@ -135,7 +135,7 @@ class RoutesController extends Controller
         try {
             $route = Route::findOrfail($id);
 
-            $state= State::where('code', 'INACTIVE')->first();
+            $state= State::where('code', 'CANCELLED')->first();
 
             //actualizar el estado de la ruta
             $route->state_id = $state->id;

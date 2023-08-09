@@ -132,7 +132,7 @@ class EventController extends Controller
             $event = Event::findOrFail($id);
 
             // get state code for INACTIVE
-            $state = State::where('code', 'INACTIVE')->first();
+            $state = State::where('code', 'CANCELLED')->first();
 
             // Actualizar el estado del usuario
             $event->state_id = $state->id;

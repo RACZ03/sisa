@@ -152,7 +152,7 @@ class MaterialController extends Controller
             $material = Material::findOrFail($id);
 
             // get state code for INACTIVE
-            $state = State::where('code', 'INACTIVE')->first();
+            $state = State::where('code', 'CANCELLED')->first();
 
             // Actualizar el estado del usuario
             $material->state_id = $state->id;

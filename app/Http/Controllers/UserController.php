@@ -221,7 +221,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             // get state code for INACTIVE
-            $state = State::where('code', 'INACTIVE')->first();
+            $state = State::where('code', 'CANCELLED')->first();
 
             // Actualizar el estado del usuario
             $user->state_id = $state->id;
