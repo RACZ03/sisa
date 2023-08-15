@@ -3,10 +3,13 @@ listTemp = [];
 
 $(document).ready(function () {
 
+    console.log('Hi')
     // dehabilitar el select de materiales
     $('#materialSelect').prop('disabled', true);
     // dehabilitar el select de tecnicos
-    $('#technical').prop('disabled', true);
+    $('#route').prop('disabled', true);
+
+
 
     // selected date now in input date
     $('#date').val(moment().format('YYYY-MM-DD'));
@@ -74,11 +77,6 @@ $(document).ready(function () {
         // cargar los materiales de la tecnologia seleccionada
         let materials = materiales.filter(m => m.technology_id == technologyId);
         // cargar los materiales en el select
-        // $('#materialSelect').empty();
-        // $('#materialSelect').append('<option value="" selected disabled>Seleccione un material</option>');
-        // materials.forEach(material => {
-        //     $('#materialSelect').append(`<option value="${material.id}">${material.name}</option>`);
-        // });
 
 
         // clean listTemp
@@ -88,11 +86,6 @@ $(document).ready(function () {
         materials.forEach(material => {
             const fila = `
             <tr>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm btnEliminar">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
                 <td>${material.code}</td>
                 <td>${material.name}</td>
                 <td><input type="number" class="form-control cantidad" id="cantidad-${ listTemp?.length || 0 }" style="max-width: 100px; min-width:100px;" min="1"></td>
@@ -104,41 +97,48 @@ $(document).ready(function () {
         });
     });
 
-    // detectar evento selected input ruta
-    $('#route').on('change', function () {
-        // Obtener el ID de la ruta seleccionada
-        const routeId = $(this).val();
-        // Habilitar el select de tecnicos
-        // $('#technical').prop('disabled', false);
-        // buscar ruta en la lista routes
-        let route = routes.find(r => r.id == routeId);
-
-        // obtener technical_id
-        // cargar los tecnicos en el select de tecnicos
-        $('#technical').empty();
-        // filtrar tecnico por tecnico_id
-        let technical = technicals.filter(t => t.id == route.user_id);
-        $('#technical').append(`<option value="${technical[0].id}">${technical[0].name}</option>`);
+    // detectar evento selected input tecnico
+    $('#technical').on('change', function () {
+        // Obtener el ID del tecnico seleccionado
+        const technicalId = $(this).val();
+        // Habilitar el select de rutas
+        $('#route').prop('disabled', false);
+        // cargar las rutas del tecnico seleccionado
+        let route = routes.find(r => r.user_id == technicalId);
+        // cargar las rutas en el select
+        $('#route').empty();
+        $('#route').append(`<option value="${route.id}">${route.name}</option>`);
     });
 
+    $('#event').on('change', function () {
+        // recorrer tables validations
 
-    // Evento vtnEliminar
-    // $('#tablaMateriales').on('click', '.btnEliminar', function () {
-    //     // Eliminar la fila de la tabla
-    //     $(this).closest('tr').remove();
+        let event = $(this).val();
 
-    //     // Obtener el ID del material
-    //     let materialId = $(this).closest('tr').find('td:first').text();
+        if ( event == 2 ) {
+            listTemp.forEach((material, index) => {
 
-    //     // Eliminar el material de la lista
-    //     let index = listTemp.findIndex(m => m.id == materialId);
-    //     listTemp.splice(index, 1);
-    // });
+                let m = materiales.find(x => x.id = material?.id );
+                let cantidad = $('#cantidad-' + index).val();
+
+                if ( m?.stock < cantidad ) {
+                    toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
+                    $('#cantidad-' + index).addClass('border-danger');
+                } else {
+                    $('#cantidad-' + index).removeClass('border-danger');
+                    $('#cantidad-' + index).addClass('border-success');
+                }
+
+            });
+        }
+
+    });
 
     // detectar onblud en el input de cantidad
     $('#tablaMateriales').on('blur', '.cantidad', function () {
         // Obtener la cantidad ingresada
         let cantidad = parseInt($(this).val(), 10);
+        let event = $('#event').val();
 
         // validar si no es un numero mostrar una alerta
         if (isNaN(cantidad)) {
@@ -147,16 +147,26 @@ $(document).ready(function () {
         }
 
         // obtener el codigo del material de la segunda columna
-        let materialCode = $(this).closest('tr').find('td:nth-child(2)').text();
+        let materialCode = $(this).closest('tr').find('td:nth-child(1)').text();
         // obtener el material
         let material = materiales.find(m => m.code == materialCode);
-        let materialTem = listTemp.find(m => m.code == materialCode);
-        materialTem.cantidad = cantidad;
-        material.cantidad = cantidad;
-        if (cantidad > material.stock) {
-            toastr.error('La cantidad ingresada supera el stock disponible.');
-            $(this).val(material.stock);
+
+        if ( event == 2 ) {
+
+            if ( material.stock < cantidad ) {
+                toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
+                $(this).addClass('border-danger');
+                $(this).val();
+            } else {
+                $(this).removeClass('border-danger');
+                $(this).addClass('border-success');
+            }
+
+        } else {
+            $(this).removeClass('border-danger');
+            $(this).addClass('border-success');
         }
+
 
         // agregar input de series segun la cantidad ingresada y si has_series es true or 1
         if (material.has_series) {
@@ -166,7 +176,7 @@ $(document).ready(function () {
                 // get position from table
                 let position = $(this).closest('tr').index();
                 // add series and asigned id to input for position in array and for row position in table
-                series += `<input type="text" class="form-control series" id="series-${position}-${i}" style="max-width: 100px; min-width:100px;" placeholder="Serie">`;
+                series += `<input type="text" class="form-control series" id="series-${position}-${i}" style="max-width: 150px; min-width:100px; margin-left: 10px;" placeholder="Serie">`;
 
             }
             $(this).closest('tr').find('.series-td').html(`<div class="d-flex">${series}</div>`);
@@ -240,51 +250,36 @@ $(document).ready(function () {
             return;
         }
 
-        // validar si alguna elemento de la lista tiene cantidad 0 e indicar cual es
-        let material = listTemp.find(m => m.cantidad == 0);
-        if (material) {
-            toastr.error(`El material ${material.name} tiene cantidad 0.`);
-
-            listTemp.forEach((material, index) => {
-                if (material.cantidad == 0) {
-                    $(`#cantidad-${index}`).addClass('border-danger');
-                }
-            });
-
-            return;
-        }
+        let bandExists = false;
 
         listTemp.forEach((material, index) => {
-
-            if( material.cantidad == undefined || material.cantidad == null || material.cantidad == '' ) {
-                toastr.error(`Debe ingresar la cantidad para el material ${material.name}.`);
-                // border red input cantidad cantidad-${ listTemp?.length || 0 }
-                $(`#cantidad-${index}`).addClass('border-danger');
-                return;
-            } else {
-                // border green input cantidad cantidad-${ listTemp?.length || 0 }
-                $(`#cantidad-${index}`).removeClass('border-danger');
-                $(`#cantidad-${index}`).addClass('border-success');
-            }
 
             // validar si has_series es true or 1
             if (material.has_series) {
                 // obtener la cantidad
-                let cantidad = material?.cantidad || 0;
+                // obtener cantidad del input
+                let cantidad = $('#cantidad-' + index).val();
 
-                // validar si la cantidad es igual a 0 or null o ''
-                if (cantidad == 0 || cantidad == null || cantidad == '') {
-                    toastr.error(`Debe ingresar la cantidad para el material ${material.name}.`);
-                    // border red input cantidad cantidad-${ listTemp?.length || 0 }
-                    $(`#cantidad-${index+1}`).addClass('border-danger');
-                    return;
-                } else {
-                    // border green input cantidad cantidad-${ listTemp?.length || 0 }
-                    $(`#cantidad-${index+1}`).removeClass('border-danger');
-                    $(`#cantidad-${index+1}`).addClass('border-success');
+                if ( event == 2 ) {
+                    // buscar el material
+                    let m = materiales.find(x => x.id = material.id);
+
+                    if ( m?.stock < cantidad ) {
+                        toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
+                        $('#cantidad-' + index).addClass('border-danger');
+                        bandExists = true;
+                        return;
+                    } else {
+                        $('#cantidad-' + index).removeClass('border-danger');
+                        $('#cantidad-' + index).addClass('border-success');
+                    }
                 }
 
+
+                material.cantidad = cantidad !== null ? cantidad : 0;
+
                 material.series = [];
+
                 // obtener las series existentes en la posicion del index y segun la cantidad
                 for (let i = 0; i < cantidad; i++) {
                     // fin input series by series-${position}-${i}
@@ -294,6 +289,7 @@ $(document).ready(function () {
                         toastr.error(`Debe ingresar la serie ${i + 1} para el material ${material.name}.`);
                         // border red
                         $(series).addClass('border-danger');
+                        bandExists = true;
                         return;
                     } else {
                         // border green
@@ -312,27 +308,20 @@ $(document).ready(function () {
                     // }
                 }
 
-            } else {
-                // validar si la cantidad es menor a 0 o vacio
-                if (material.cantidad < 0 || material.cantidad == '' || material.cantidad == null) {
-                    toastr.error(`La cantidad del material ${material.name} debe ser mayor a 0.`);
-                    return;
-                }
-                // validar si la cantidad es mayor al stock
-                if (material.cantidad > material.stock) {
-                    toastr.error(`La cantidad del material ${material.name} supera el stock disponible.`);
-                    return;
-                }
-
             }
         });
+
+        if ( bandExists ) {
+            return;
+        }
 
 
         let seenSeries = new Set();
         let repeatedSeries = [];
 
         listTemp.forEach((material, position) => {
-            if (material?.has_series) {
+            if (material?.has_series && material.cantidad > 0) {
+
                 material.series.forEach((series, index) => {
 
                     // remove serie with value is undefined
@@ -360,7 +349,7 @@ $(document).ready(function () {
         let band = false;
         if (repeatedSeries.length > 0) {
             listTemp.forEach((material, position) => {
-                if (material?.has_series) {
+                if (material?.has_series  && material.cantidad > 0) {
 
                     material?.series.forEach((series, index) => {
                         let serie = $(`#series-${position}-${index}`).val();
@@ -380,7 +369,7 @@ $(document).ready(function () {
             });
         } else {
             listTemp.forEach((material, position) => {
-                if (material?.has_series) {
+                if (material?.has_series  && material.cantidad > 0) {
 
                     material?.series.forEach((series, index) => {
                         let serie = $(`#series-${position}-${index}`).val();
@@ -399,7 +388,7 @@ $(document).ready(function () {
 
         let detalleInventario = [];
         // create objet detalle inventario
-        listTemp.forEach(material => {
+        listTemp.forEach((material, index) => {
             if ( material?.has_series ) {
                 material.series.forEach(serie => {
                     let detalle = {
@@ -411,10 +400,11 @@ $(document).ready(function () {
                     detalleInventario.push(detalle);
                 });
             } else {
+                let cantidad = $('#cantidad-' + index).val();
                 let detalle = {
                     code: material?.code,
                     material_id: material?.id,
-                    count: material?.cantidad,
+                    count: cantidad,
                     series: null
                 }
                 detalleInventario.push(detalle);

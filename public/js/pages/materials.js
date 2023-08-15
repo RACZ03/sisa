@@ -9,6 +9,7 @@ $(document).ready(function() {
     });
 
     const codeInput = $('#codeMaterial');
+    const name = $('#nameMaterial');
 
     // validations code exists
     codeInput.on('blur', function () {
@@ -18,11 +19,19 @@ $(document).ready(function() {
         validateField('code', codeInputValue, id, codeInput);
     });
 
+    // validation code and name blur convert to uppercase
+    codeInput.on('blur', function () {
+        convertToUpperCase(codeInput);
+    });
+
+    name.on('blur', function () {
+        convertToUpperCase(name);
+    });
 
 });
 
 function convertToUpperCase(input) {
-    input.value = input.value.toUpperCase();
+    input.value = input.value?.toUpperCase();
 }
 
 function validateField(field, value, id, elementInput) {
@@ -81,16 +90,12 @@ function onEdit(button) {
     const materialId = row.dataset.materialId;
     const code = row.dataset.materialCode;
     const name = row.dataset.materialName;
-    const description = row.dataset.materialDescription;
-    const stock = row.dataset.materialStock;
     const has_series = row.dataset.materialHasSeries;
 
     // Llenar el formulario con los datos del material
     $('#material_id').val(materialId);
     $('#codeMaterial').val(code);
     $('#nameMaterial').val(name);
-    $('#descriptionMaterial').val(description);
-    $('#stockMaterial').val(stock);
 
     // check has_series
     if (has_series === '1' || has_series === 1) {
@@ -156,8 +161,6 @@ document.getElementById('saveMaterialBtn').addEventListener('click', function ()
     const id = $('#material_id').val();
     const code = $('#codeMaterial').val();
     const name = $('#nameMaterial').val();
-    const description = $('#descriptionMaterial').val();
-    const stock = $('#stockMaterial').val();
     const technology_id = $('#technologyMaterial').val();
 
     // obtener si has_series esta seleccionado
@@ -200,16 +203,6 @@ document.getElementById('saveMaterialBtn').addEventListener('click', function ()
         $('#nameMaterial').css('border-color', 'green');
     }
 
-    // validar stock sea mayor a 0
-    if ( stock <= 0 ) {
-        toastr.error('El stock debe ser mayor a 0.');
-        // border red
-        $('#stockMaterial').css('border-color', 'red');
-        return;
-    } else {
-        $('#stockMaterial').css('border-color', 'green');
-    }
-
 
     let url = '';
     let method = '';
@@ -226,8 +219,6 @@ document.getElementById('saveMaterialBtn').addEventListener('click', function ()
         technology_id: technology_id,
         code: code,
         name: name,
-        description: description,
-        stock: stock,
         has_series: has_series
     };
 
@@ -268,15 +259,11 @@ function cleanModal() {
     $('#material_id').val('');
     $('#codeMaterial').val('');
     $('#nameMaterial').val('');
-    $('#descriptionMaterial').val('');
-    $('#stockMaterial').val('');
     $('#has_seriesMaterial').val('');
     $('#technologyMaterial').val('');
     // border color default
     $('#codeMaterial').css('border-color', '#ced4da');
     $('#nameMaterial').css('border-color', '#ced4da');
-    $('#descriptionMaterial').css('border-color', '#ced4da');
-    $('#stockMaterial').css('border-color', '#ced4da');
     $('#has_seriesMaterial').css('border-color', '#ced4da');
     $('#technologyMaterial').css('border-color', '#ced4da');
 

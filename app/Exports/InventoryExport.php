@@ -43,11 +43,11 @@ class InventoryExport implements FromView, WithTitle, WithStyles, ShouldAutoSize
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:H1')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A6:H6')->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A1:H' . ($this->inventoryDetails->count() + 8))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('A1:G1')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A6:G6')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:G' . ($this->inventoryDetails->count() + 8))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         // Aplicar color de fondo a la fila de Materiales
-        $sheet->getStyle('A7:H7')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFC6E0B4');
+        $sheet->getStyle('A7:G7')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFC6E0B4');
     }
 }
 

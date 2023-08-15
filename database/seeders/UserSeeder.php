@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'email' => 'user' . $i . '@example.com',
                 'password' => Hash::make('password123'), // You can use any desired password here
                 'phone' => '12345678'.$i, // You can generate random phone numbers here if needed
-                'role_id' => $roles[$i - 1], // Get the corresponding role_id from the roles array
+                'role_id' => 3,
                 'state_id' => 1, // 'Activo'
                 'created_at' => now(),
                 'updated_at' => now(),

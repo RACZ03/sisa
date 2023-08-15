@@ -7,6 +7,7 @@ $(document).ready(function() {
     });
 
     const codeInput = $('#code');
+    const name = $('#name');
 
     // validations code exists
     codeInput.on('blur', function () {
@@ -16,10 +17,15 @@ $(document).ready(function() {
         validateField('code', codeInputValue, id, codeInput);
     });
 
+    // validations name uppercase
+    name.on('blur', function () {
+        convertToUpperCase(name);
+    });
+
 });
 
 function convertToUpperCase(input) {
-    input.value = input.value.toUpperCase();
+    input.value = input.value?.toUpperCase();
 }
 
 function validateField(field, value, id, elementInput) {
@@ -78,7 +84,6 @@ function onEdit(button) {
     const routeId = row.dataset.routeId;
     const routeCode = row.dataset.routeCode;
     const routeName = row.dataset.routeName;
-    const routeDescription = row.dataset.routeDescription;
     const user = row.dataset.routeUser;
 
    //select option
@@ -88,7 +93,6 @@ function onEdit(button) {
     $('#route_id').val(routeId);
     $('#code').val(routeCode);
     $('#name').val(routeName);
-    $('#description').val(routeDescription);
 
 
     $('#newRouteModal').modal('show');
@@ -141,7 +145,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
     const id = $('#route_id').val();
     const code = $('#code').val();
     const name = $('#name').val();
-    const description = $('#description').val();
     const user = $('#user').val();
 
     // validar que el campo de código no esté vacío
@@ -203,7 +206,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
         data: {
             code: code,
             name: name,
-            description: description,
             user: user,
         },
         success: function(response) {
@@ -235,12 +237,10 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
 function cleanModal() {
     $('#code').val('');
     $('#name').val('');
-    $('#description').val('');
     $('#route_id').val('');
     $('#user').val('');
     $('#code').css('border-color', '#ced4da');
     $('#name').css('border-color', '#ced4da');
-    $('#description').css('border-color', '#ced4da');
     $('#user').css('border-color', '#ced4da');
 
 

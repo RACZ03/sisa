@@ -28,7 +28,6 @@ class RouteSeeder extends Seeder
             'name' => 'RUTA-001',
             'state_id' => 1,
             'user_id' => $user->id, // 'TECHNICAL
-            'description' => 'RUTA-001',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -41,7 +40,6 @@ class RouteSeeder extends Seeder
             'name' => 'RUTA-002',
             'state_id' => 1,
             'user_id' => $user2->id, // 'TECHNICAL
-            'description' => 'RUTA-002',
             'created_at' => now(),
             'updated_at' => now()
         ]);

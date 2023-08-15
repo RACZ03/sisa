@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('code', 200)->nullable(false);
             $table->string('name');
-            $table->string('description')->nullable();
             $table->integer('stock')->nullable(false)->default(0);
             $table->boolean('has_series')->default(false);
             $table->unsignedBigInteger('technology_id')->nullable();

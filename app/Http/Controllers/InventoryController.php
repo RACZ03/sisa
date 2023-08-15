@@ -66,12 +66,16 @@ class InventoryController extends Controller
         $technicals = User::where('role_id', $role->id)->get();
         $routes = Route::where('state_id', $state->id)->get();
 
+        $technicalsInRoutes = $technicals->whereIn('user_id', $routes->pluck('route_id'));
+        // filter technicals with asigned routes
+
+
         // get user auth
         $user = Auth::user();
 
         // Obtener nombre del usuario logueado
         return view('pages/inventory/create',
-            ['userAuth' => $user, 'events' => $events, 'technologies' => $technologies, 'materials' => $materials, 'technicals' => $technicals, 'routes' => $routes]
+            ['userAuth' => $user, 'events' => $events, 'technologies' => $technologies, 'materials' => $materials, 'technicals' => $technicalsInRoutes, 'routes' => $routes]
         );
     }
 
@@ -138,7 +142,11 @@ class InventoryController extends Controller
                 // Verificar si el save se ejecutó correctamente, actualizar el stock del material
                 if ($inventory_detail->id) {
                     $material = Material::find($value['material_id']);
-                    $material->stock = $material->stock + $value['count'];
+                    if ($request->input('event_id') == $event->id) {
+                        $material->stock = $material->stock + $value['count'];
+                    } else {
+                        $material->stock = $material->stock - $value['count'];
+                    }
                     $material->save();
                 }
             }

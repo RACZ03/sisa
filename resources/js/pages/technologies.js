@@ -21,7 +21,7 @@ $(document).ready(function() {
 });
 
 function convertToUpperCase(input) {
-    input.value = input.value.toUpperCase();
+    input.value = input.value?.toUpperCase();
 }
 
 function validateField(field, value, id, elementInput) {

@@ -82,7 +82,6 @@
                                 <tr>
                                     <th></th>
                                     <th>Código</th>
-                                    <th>Descripción</th>
                                     <th>Stock Anterior</th>
                                     <th>Cantidad</th>
                                     <th>Nuevo Stock</th>
@@ -94,7 +93,6 @@
                                         <tr>
                                             <td>{{ $index+1 }}</td>
                                             <td>{{ $detail->material->name }}</td>
-                                            <td>{{ $detail->material->description }}</td>
                                             <td>{{ $detail->old_stock }}</td>
                                             <td>{{ $detail->count }}</td>
                                             <td>{{ $detail->new_stock }}</td>

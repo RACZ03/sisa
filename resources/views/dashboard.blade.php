@@ -16,9 +16,9 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="fa fa-users text-lg opacity-10"></i>
-              </div>
+                <a href="{{ url('users') }}" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fa fa-users text-lg opacity-10"></i>
+                </a>
             </div>
           </div>
         </div>
@@ -37,9 +37,9 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="fa fa-list text-lg opacity-10"></i>
-              </div>
+                <a href="{{ url('materials') }}" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fa fa-list text-lg opacity-10"></i>
+                </a>
             </div>
           </div>
         </div>
@@ -58,9 +58,9 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="fa fa-ethernet text-lg opacity-10"></i>
-              </div>
+                <a href="{{ url('technologies') }}" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fa fa-ethernet text-lg opacity-10"></i>
+                </a>
             </div>
           </div>
         </div>
@@ -79,9 +79,9 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                <i class="fa fa-truck text-lg opacity-10"></i>
-              </div>
+                <a href="{{ url('routes') }}" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fa fa-truck text-lg opacity-10"></i>
+                </a>
             </div>
           </div>
         </div>

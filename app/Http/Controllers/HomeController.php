@@ -30,7 +30,7 @@ class HomeController extends Controller
         // get inventories active
         $chartData = [];
 
-    // Obtener el período de los últimos 6 meses desde hoy
+        // Obtener el período de los últimos 6 meses desde hoy
         $currentDate = now();
         $sixMonthsAgo = $currentDate->copy()->subMonths(6);
 
@@ -43,12 +43,11 @@ class HomeController extends Controller
                 return $inventory->created_at->format('Y-m') === $month;
             });
 
-            // Obtener los IDs de eventos para este mes
-            $eventIdsThisMonth = $inventoriesThisMonth->pluck('event_id');
+            // Obtener conteo de inventarios event_id = 1
+            $loadCount = $inventoriesThisMonth->where('event_id', 1)->count();
 
-            // Contar eventos por código en este mes
-            $loadCount = Event::whereIn('id', $eventIdsThisMonth)->where('code', 'LOAD')->count();
-            $debitCount = Event::whereIn('id', $eventIdsThisMonth)->where('code', 'DEBIT')->count();
+            // Obtener conteo de inventarios event_id = 2
+            $debitCount = $inventoriesThisMonth->where('event_id', 2)->count();
 
             // Agregar datos al array
             $chartData[$month] = [
@@ -59,7 +58,6 @@ class HomeController extends Controller
             // Mover al mes anterior
             $currentDate->subMonth();
         }
-
 
         return view('dashboard', [
             'users' => $users,

@@ -30,9 +30,6 @@
                                         Nombre
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Descripción
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Tecnico
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -57,9 +54,6 @@
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->name }} </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->description }} </p>
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->user->name }} </p>
@@ -112,13 +106,9 @@
                     </div>
                     <div class="mb-2">
                         <label for="name" class="form-label">Ruta</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" required oninput="convertToUpperCase(this)">
                     </div>
 
-                    <div class="mb-2">
-                        <label for="name" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description" required></textarea>
-                    </div>
                     <div class="mb-2">
                         <label for="route" class="form-label">Tecnico</label>
                         <select class="form-select" id="user" name="user" required>

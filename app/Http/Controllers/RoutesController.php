@@ -64,16 +64,14 @@ class RoutesController extends Controller
         $validatedData = $request->validate([
             'code' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
             'user' => 'required|exists:users,id',
         ]);
 
         try{
             $routes = Route::firstOrCreate(
-                ['code' => $validatedData['code']],
+                ['code' => strtoupper(trim($validatedData['code']))],
                 [
-                    'name' => $validatedData['name'],
-                    'description' => $validatedData['description'] ? $validatedData['description'] : null,
+                    'name' => strtoupper(trim($validatedData['name'])),
                     'state_id' => State::where('code', '=', 'ACTIVE')->first()->id,
                     'user_id' => $validatedData['user'],
                 ]);
@@ -105,13 +103,11 @@ class RoutesController extends Controller
             $validatedData = $request->validate([
                 'code' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:255',
                 'user' => 'required|exists:users,id',
             ]);
             //actualizar los campos de la ruta
-            $route->code = $validatedData['code'];
-            $route->name = $validatedData['name'];
-            $route->description = $validatedData['description'];
+            $route->code = strtoupper(trim($validatedData['code']));
+            $route->name = strtoupper(trim($validatedData['name']));
             $route->user_id = $validatedData['user'];
             $route->updated_at = now();
             $route->save();

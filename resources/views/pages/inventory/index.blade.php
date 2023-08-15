@@ -9,13 +9,13 @@
                 <div class="card-header pb-0" style="background: #fff; border: none;">
                     <div class="d-flex flex-row justify-content-between">
                         <div>
-                            <h5 class="mb-0">Inventario</h5>
+                            <h5 class="mb-2">Movimientos</h5>
                         </div>
                         <a href="{{ route('inventory.create') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; Nuevo</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
+                    <div class="table-responsive p-0 mt-2">
                         <table id="inventories-table" class="table align-items-center mb-0" style="border-bottom: 2px solid rgb(198, 190, 190) !important;">
                             <thead>
                                 <tr>

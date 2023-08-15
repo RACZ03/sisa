@@ -59,8 +59,6 @@ class MaterialController extends Controller
         $validatedData = $request->validate([
             'code' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
-            'stock' => 'required|integer',
             'has_series' => 'required|boolean',
             'technology_id' => 'required|exists:technologies,id'
         ]);
@@ -69,11 +67,10 @@ class MaterialController extends Controller
             $state = State::where('code', '=', 'ACTIVE')->first();
             // Obtener o crear el usuario en la base de datos
             $material = Material::firstOrCreate(
-                ['code' => $validatedData['code']],
+                ['code' => strtoupper(trim($validatedData['code'])) ],
                 [
-                    'name' => $validatedData['name'],
-                    'description' => $validatedData['description'],
-                    'stock' => $validatedData['stock'],
+                    'name' => strtoupper(trim($validatedData['name'])),
+                    'stock' => 0,
                     'has_series' => $validatedData['has_series'],
                     'technology_id' => $validatedData['technology_id'],
                     'state_id' => $state->id,
@@ -104,18 +101,13 @@ class MaterialController extends Controller
             $validatedData = $request->validate([
                 'code' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:255',
-                'stock' => 'required|integer',
                 'has_series' => 'required|boolean',
                 'technology_id' => 'required|exists:technologies,id',
             ]);
 
-
             // Actualizar los datos del material
-            $material->code = $validatedData['code'];
-            $material->name = $validatedData['name'];
-            $material->description = $validatedData['description'];
-            $material->stock = $validatedData['stock'];
+            $material->code = strtoupper(trim($validatedData['code']));
+            $material->name = strtoupper(trim($validatedData['name']));
             $material->has_series = $validatedData['has_series'];
             $material->technology_id = $validatedData['technology_id'];
             $material->updated_at = now();
