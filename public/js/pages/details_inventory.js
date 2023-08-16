@@ -423,6 +423,34 @@ $(document).ready(function () {
         // send ajax
         save(inventario);
     });
+
+    // detectar evento paste posterior a un blur
+    $('#tablaMateriales').on('paste blur change', '.series', function (e) {
+        e.preventDefault(); // Evita que el texto pegado se agregue al input automáticamente
+
+        // Guarda una referencia al input actual
+        let $currentInput = $(this);
+
+        // Obtiene el texto pegado del evento
+        let pastedText = (e.originalEvent || e).clipboardData.getData('text');
+
+        // Pega el texto en el input actual
+        $currentInput.val(pastedText);
+
+        // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
+        let cantidad = $currentInput.closest('tr').find('.cantidad').val();
+
+        // Calcula la posición y el índice del input actual
+        let position = $currentInput.closest('tr').index();
+        let index = $currentInput.index();
+
+        // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
+        if (index < cantidad - 1) {
+            $(`#series-${position}-${index + 1}`).focus();
+        }
+    });
+
+
 });
 
 

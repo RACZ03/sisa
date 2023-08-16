@@ -97,7 +97,6 @@ class ReportsController extends Controller
                         'detail_code' => $detail->code,
                         'detail_material_id' => $detail->material_id,
                         'detail_material' => $detail->material->name,
-                        'detail_material_description' => $detail->material->description,
                         'detail_old_stock' => $detail->old_stock,
                         'detail_new_stock' => $detail->new_stock,
                         'detail_count' => $detail->count,

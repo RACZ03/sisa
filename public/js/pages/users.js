@@ -114,8 +114,15 @@ $(document).ready(function() {
         }
     });
 
+    nameInput.on('blur', function () {
+        convertToUpperCase(nameInput);
+    });
+
 });
 
+function convertToUpperCase(input) {
+    input.value = input.value?.toUpperCase();
+}
 
 function validateField(field, value, id, elementInput) {
 
@@ -186,6 +193,7 @@ function onEditUser(button) {
     const userPhone = row.dataset.userPhone;
     const userEmail = row.dataset.userEmail;
     const role = row.dataset.userRole;
+    console.log(role);
 
     // select role
     $('#role').val(role);
@@ -278,13 +286,13 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
     // obtener el valor del phoneInput
     let phoneInputValue = phoneInput.val();
     // validar que el valor tenga esta estructa (###) #### #### y la misma cantidad de caracteres
-    if (phoneInputValue.length < 15 || phoneInputValue.length > 15) {
-        toastr.error('El número de teléfono debe tener el formato (###) #### ####.');
-        phoneInput.css('border-color', 'red');
-        return;
-    } else {
-        phoneInput.css('border-color', 'green');
-    }
+    // if (phoneInputValue.length < 15 || phoneInputValue.length > 15) {
+    //     toastr.error('El número de teléfono debe tener el formato (###) #### ####.');
+    //     phoneInput.css('border-color', 'red');
+    //     return;
+    // } else {
+    //     phoneInput.css('border-color', 'green');
+    // }
 
     // validar que la contraseña y confirmacion de contraseña su longitud sea mayor a 6 caracteres y que sean iguales
     const passwordValue = passwordInput.val();

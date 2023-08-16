@@ -22,11 +22,9 @@ class UserController extends Controller
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
         $stateInactive = DB::table('states')->where('code', '=', 'INACTIVE')->first();
 
-        $role = DB::table('roles')->where('code', '=', 'SUPERADMIN')->first();
 
         $users = User::where('state_id', '=', $state->id )
                     ->orWhere('state_id', '=', $stateInactive->id )
-                    ->where('role_id', '!=', $role->id)
                     ->orderBy('created_at', 'desc')
                     ->get();
 
@@ -76,7 +74,7 @@ class UserController extends Controller
         // Validar los campos del formulario antes de guardar
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
             'email' => 'required|email',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string|min:6',
@@ -86,7 +84,7 @@ class UserController extends Controller
         try {
             // Obtener o crear el usuario en la base de datos
             $user = User::firstOrCreate(['email' => $validatedData['email']], [
-                'name' => $validatedData['name'],
+                'name' => strtoupper(trim($validatedData['name'])),
                 'phone' => $validatedData['phone'],
                 'password' => Hash::make($validatedData['password']),
                 'role_id' => $validatedData['role'],
@@ -131,14 +129,14 @@ class UserController extends Controller
             // Validar los campos del formulario antes de actualizar
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:255|unique:users,phone,' . $user->id,
+                'phone' => 'nullable|string|max:255|unique:users,phone,' . $user->id,
                 'email' => 'required|email|unique:users,email,' . $user->id,
                 // 'password' => 'nullable|string|min:6|confirmed',
                 'role' => 'required|exists:roles,id',
             ]);
 
             // Actualizar los datos del usuario
-            $user->name = $validatedData['name'];
+            $user->name = strtoupper(trim($validatedData['name']));
             $user->phone = $validatedData['phone'];
             $user->email = $validatedData['email'];
             $user->role_id = $validatedData['role'];

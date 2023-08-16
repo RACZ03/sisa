@@ -28,19 +28,19 @@ var $jq = jQuery.noConflict();
             {
                 extend: 'excelHtml5',
                 text: 'Exportar a Excel',
-                title: 'Reporte de Inventario' + ' - ' + moment().format('DD/MM/YYYY'),
+                title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-success',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
                 }
             },
             {
                 extend: 'pdfHtml5',
                 text: 'Exportar a PDF',
-                title: 'Reporte de Inventario' + ' - ' + moment().format('DD/MM/YYYY'),
+                title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-danger',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
                 },
                 orientation: 'landscape'
             }
@@ -126,7 +126,6 @@ function loadDataTable(data) {
             item.technology,
             item.detail_code,
             item.detail_material,
-            item.detail_material_description,
             item.detail_old_stock,
             item.detail_count,
             item.detail_new_stock,

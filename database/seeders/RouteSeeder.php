@@ -17,29 +17,53 @@ class RouteSeeder extends Seeder
     public function run(): void
     {
         // get role code TECHNICAL
-        $role = Role::where('code', 'TECHNICAL')->first();
-
-        // get first user with role TECHNICAL
-        $user = User::where('role_id', $role->id)->first();
 
         DB::table('routes')->insert([
             'id' => 1,
-            'code' => 'RUTA-001',
-            'name' => 'RUTA-001',
+            'code' => 'RUTA-01',
+            'name' => 'RUTA-01',
             'state_id' => 1,
-            'user_id' => $user->id, // 'TECHNICAL
+            'user_id' => 2, // 'TECHNICAL
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        $user2 = User::where('role_id', $role->id)->skip(1)->first();
-
         DB::table('routes')->insert([
             'id' => 2,
-            'code' => 'RUTA-002',
-            'name' => 'RUTA-002',
+            'code' => 'RUTA-02',
+            'name' => 'RUTA-02',
             'state_id' => 1,
-            'user_id' => $user2->id, // 'TECHNICAL
+            'user_id' => 3, // 'TECHNICAL
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('routes')->insert([
+            'id' => 3,
+            'code' => 'RUTA-03',
+            'name' => 'RUTA-03',
+            'state_id' => 1,
+            'user_id' => 4, // 'TECHNICAL
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('routes')->insert([
+            'id' => 4,
+            'code' => 'RUTA-04',
+            'name' => 'RUTA-04',
+            'state_id' => 1,
+            'user_id' => 5, // 'TECHNICAL
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('routes')->insert([
+            'id' => 5,
+            'code' => 'RUTA-05',
+            'name' => 'RUTA-05',
+            'state_id' => 1,
+            'user_id' => 6, // 'TECHNICAL
             'created_at' => now(),
             'updated_at' => now()
         ]);
