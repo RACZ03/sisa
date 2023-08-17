@@ -8,6 +8,7 @@ $(document).ready(function() {
     });
 
     const codeInput = $('#code');
+    const name = $('#name');
 
     // validations code exists
     codeInput.on('blur', function () {
@@ -17,6 +18,10 @@ $(document).ready(function() {
         validateField('code', codeInputValue, id, codeInput);
     });
 
+    // validations name uppercase
+    name.on('blur', function () {
+        convertToUpperCase(name);
+    });
 
 });
 
@@ -80,14 +85,11 @@ function onEdit(button) {
     const technologytId = row.dataset.technologyId;
     const technologyCode = row.dataset.technologyCode;
     const technologyName = row.dataset.technologyName;
-    const technologyDescription = row.dataset.technologyDescription;
 
     // Llenar el modal con los valores del usuario
     document.getElementById('technology_id').value = technologytId;
     document.getElementById('code').value = technologyCode;
     document.getElementById('name').value = technologyName;
-    document.getElementById('description').value = technologyDescription;
-
 
     // Abrir el modal de edición
     $('#newTechnologyModal').modal('show');
@@ -142,7 +144,6 @@ document.getElementById('saveTechnologyBtn').addEventListener('click', function 
     const id = $('#technology_id').val();
     const code = $('#code').val();
     const name = $('#name').val();
-    const description = $('#description').val();
 
     // validar que el campo de código no esté vacío
     if (code === '') {
@@ -191,7 +192,6 @@ document.getElementById('saveTechnologyBtn').addEventListener('click', function 
         data: {
             code: code,
             name: name,
-            description: description,
         },
         success: function(response) {
             // hide modal

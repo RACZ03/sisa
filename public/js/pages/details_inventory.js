@@ -110,29 +110,29 @@ $(document).ready(function () {
         $('#route').append(`<option value="${route.id}">${route.name}</option>`);
     });
 
-    $('#event').on('change', function () {
-        // recorrer tables validations
+    // $('#event').on('change', function () {
+    //     // recorrer tables validations
 
-        let event = $(this).val();
+    //     let event = $(this).val();
 
-        if ( event == 2 ) {
-            listTemp.forEach((material, index) => {
+    //     if ( event == 2 ) {
+    //         listTemp.forEach((material, index) => {
 
-                let m = materiales.find(x => x.id = material?.id );
-                let cantidad = $('#cantidad-' + index).val();
+    //             let m = materiales.find(x => x.id = material?.id );
+    //             let cantidad = $('#cantidad-' + index).val();
 
-                if ( m?.stock < cantidad ) {
-                    toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
-                    $('#cantidad-' + index).addClass('border-danger');
-                } else {
-                    $('#cantidad-' + index).removeClass('border-danger');
-                    $('#cantidad-' + index).addClass('border-success');
-                }
+    //             if ( m?.stock < cantidad ) {
+    //                 toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
+    //                 $('#cantidad-' + index).addClass('border-danger');
+    //             } else {
+    //                 $('#cantidad-' + index).removeClass('border-danger');
+    //                 $('#cantidad-' + index).addClass('border-success');
+    //             }
 
-            });
-        }
+    //         });
+    //     }
 
-    });
+    // });
 
     // detectar onblud en el input de cantidad
     $('#tablaMateriales').on('blur', '.cantidad', function () {
@@ -180,6 +180,39 @@ $(document).ready(function () {
 
             }
             $(this).closest('tr').find('.series-td').html(`<div class="d-flex">${series}</div>`);
+        }
+    });
+
+    // detectar evento paste posterior a un blur
+    $('#tablaMateriales').on('paste blur change', '.series', function (e) {
+        e.preventDefault(); // Evita que el texto pegado se agregue al input automáticamente
+
+        // Guarda una referencia al input actual
+        let $currentInput = $(this);
+
+        let pastedText = '';
+        // VALIDAR SI SE HACE PASTE
+        if (e.type == 'paste') {
+            // Obtiene el texto pegado del evento
+            pastedText = (e.originalEvent || e)?.clipboardData?.getData('text');
+        } else {
+            // Obtiene el texto ingresado del evento
+            pastedText = $(this).val();
+        }
+
+        // Pega el texto en el input actual
+        $currentInput.val(pastedText);
+
+        // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
+        let cantidad = $currentInput.closest('tr').find('.cantidad').val();
+
+        // Calcula la posición y el índice del input actual
+        let position = $currentInput.closest('tr').index();
+        let index = $currentInput.index();
+
+        // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
+        if (index < cantidad - 1) {
+            $(`#series-${position}-${index + 1}`).focus();
         }
     });
 
@@ -251,31 +284,49 @@ $(document).ready(function () {
         }
 
         let bandExists = false;
+        let stockExists = false;
 
         listTemp.forEach((material, index) => {
 
-            // validar si has_series es true or 1
-            if (material.has_series) {
-                // obtener la cantidad
-                // obtener cantidad del input
-                let cantidad = $('#cantidad-' + index).val();
+            let cantidad = $('#cantidad-' + index).val() || 0;
 
-                if ( event == 2 ) {
-                    // buscar el material
-                    let m = materiales.find(x => x.id = material.id);
+            if ( event == 2 ) {
+                // buscar el material
+                let m = materiales.find(x => x.id = material.id);
 
-                    if ( m?.stock < cantidad ) {
-                        toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
-                        $('#cantidad-' + index).addClass('border-danger');
-                        bandExists = true;
-                        return;
-                    } else {
-                        $('#cantidad-' + index).removeClass('border-danger');
-                        $('#cantidad-' + index).addClass('border-success');
-                    }
+                if ( m?.stock < cantidad ) {
+                    toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
+                    $('#cantidad-' + index).addClass('border-danger');
+                    bandExists = true;
+                    return;
+                } else if (m.stock == 0 ) {
+                    $('#cantidad-' + index).addClass('border-danger');
+                    stockExists = true;
+                    return;
+                } else {
+                    $('#cantidad-' + index).removeClass('border-danger');
+                    $('#cantidad-' + index).addClass('border-success');
                 }
 
 
+            }
+        });
+
+        if ( stockExists ) {
+            // mostrar toarts con mensaje que indique que no se puede realizar un debito para materiales con stock en 0
+            toastr.error('No se puede realizar un debito para materiales con stock en 0.');
+            return;
+        }
+
+        if ( bandExists ) {
+            return;
+        }
+
+        listTemp.forEach((material, index) => {
+            let cantidad = $('#cantidad-' + index).val() || 0;
+            // validar si has_series es true or 1
+            if (material.has_series) {
+                // obtener la cantidad
                 material.cantidad = cantidad !== null ? cantidad : 0;
 
                 material.series = [];
@@ -424,31 +475,6 @@ $(document).ready(function () {
         save(inventario);
     });
 
-    // detectar evento paste posterior a un blur
-    $('#tablaMateriales').on('paste blur change', '.series', function (e) {
-        e.preventDefault(); // Evita que el texto pegado se agregue al input automáticamente
-
-        // Guarda una referencia al input actual
-        let $currentInput = $(this);
-
-        // Obtiene el texto pegado del evento
-        let pastedText = (e.originalEvent || e).clipboardData.getData('text');
-
-        // Pega el texto en el input actual
-        $currentInput.val(pastedText);
-
-        // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
-        let cantidad = $currentInput.closest('tr').find('.cantidad').val();
-
-        // Calcula la posición y el índice del input actual
-        let position = $currentInput.closest('tr').index();
-        let index = $currentInput.index();
-
-        // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
-        if (index < cantidad - 1) {
-            $(`#series-${position}-${index + 1}`).focus();
-        }
-    });
 
 
 });

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('code', 200)->nullable(false);
             $table->string('name');
-            $table->string('description')->nullable();
             $table->unsignedBigInteger('state_id')->nullable();
             $table->timestamps();
 

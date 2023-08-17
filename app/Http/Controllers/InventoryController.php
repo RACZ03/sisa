@@ -151,15 +151,15 @@ class InventoryController extends Controller
                 }
             }
 
-            return response()->json(['message' => 'El inventario se guardó correctamente.', 'status' => 200], 201);
+            return response()->json(['message' => 'El movimiento se guardó correctamente.', 'status' => 200], 201);
         } catch (QueryException $e) {
             // Verificar si el error fue causado por una clave única duplicada
             if ($e->getCode() == 23000) {
                 // Si es una clave única duplicada, se devuelve un mensaje de error personalizado
-                return response()->json(['message' => 'El código del material ya existe.', 'error' => $e], 400);
+                return response()->json(['message' => 'Error al guardar el movimiento. El código del movimiento ya existe.', 'error' => $e], 400);
             } else {
                 // Si no es una clave única duplicada, se devuelve el mensaje genérico de error
-                return response()->json(['message' => 'Error al guardar el material.', 'error' => $e], 400);
+                return response()->json(['message' => 'Error al guardar el movimiento.', 'error' => $e], 400);
             }
         }
     }
@@ -222,7 +222,7 @@ class InventoryController extends Controller
         // concatener fecha y hora
         $date = $date->format('d-m-Y H:i:s');
         // get inventory data
-        return Excel::download(new InventoryExport($id), 'inventario_' . $date . '.xlsx');
+        return Excel::download(new InventoryExport($id), 'Movimientos_' . $date . '.xlsx');
     }
 
 }

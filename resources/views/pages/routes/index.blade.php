@@ -45,7 +45,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($routes as $index => $route)
-                                    <tr data-route-id="{{ $route->id }}" data-route-code="{{ $route->code }}" data-route-name="{{ $route->name }} "  data-route-description="{{ $route->description }}" data-route-user="{{$route->user->id}}">
+                                    <tr data-route-id="{{ $route->id }}" data-route-code="{{ $route->code }}" data-route-name="{{ $route->name }} " data-route-user="{{$route->user->id}}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>

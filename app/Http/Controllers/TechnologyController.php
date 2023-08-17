@@ -52,7 +52,6 @@ class TechnologyController extends Controller
         $validatedData = $request->validate([
             'code' => 'required|string|max:255|unique:events,code',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -61,7 +60,6 @@ class TechnologyController extends Controller
                 ['code' => $validatedData['code']],
                 [
                     'name' => $validatedData['name'],
-                    'description' => $validatedData['description'],
                     'state_id' => State::where('code', '=', 'ACTIVE')->first()->id,
                 ]
             );
@@ -96,13 +94,11 @@ class TechnologyController extends Controller
             $validatedData = $request->validate([
                 'code' => 'required|string|max:255|unique:events,code,' . $technology->id,
                 'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:255',
             ]);
 
             // Actualizar los datos del usuario
             $technology->code = $validatedData['code'];
             $technology->name = $validatedData['name'];
-            $technology->description = $validatedData['description'];
             $technology->updated_at = now();
 
             $technology->save();
