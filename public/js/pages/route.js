@@ -2,27 +2,33 @@ const csrfToken = window.csrfToken;
 let validCode = true;
 
 $(document).ready(function() {
-
     $('#route-table').DataTable({
         ...DATA_TABLE_CONFIG,
     });
 
     const codeInput = $('#code');
+    const name = $('#name');
 
     // validations code exists
     codeInput.on('blur', function () {
         // get value
         const codeInputValue = codeInput.val();
-        validateField('code', codeInputValue, codeInput);
+        const id = $('#route_id').val();
+        validateField('code', codeInputValue, id, codeInput);
+    });
+
+    // validations name uppercase
+    name.on('blur', function () {
+        convertToUpperCase(name);
     });
 
 });
 
 function convertToUpperCase(input) {
-    input.value = input.value.toUpperCase();
+    input.value = input.value?.toUpperCase();
 }
 
-function validateField(field, value, elementInput) {
+function validateField(field, value, id, elementInput) {
 
     if ( value === '' ) {
         return
@@ -40,6 +46,7 @@ function validateField(field, value, elementInput) {
         data: {
             field: field,
             value: value,
+            id: id
         },
         success: function(response) {
             if (response.exists) {
@@ -77,9 +84,7 @@ function onEdit(button) {
     const routeId = row.dataset.routeId;
     const routeCode = row.dataset.routeCode;
     const routeName = row.dataset.routeName;
-    const routeDescription = row.dataset.routeDescription;
-    const user = row.dataset.user;
-
+    const user = row.dataset.routeUser;
 
    //select option
     $('#user').val(user);
@@ -88,8 +93,7 @@ function onEdit(button) {
     $('#route_id').val(routeId);
     $('#code').val(routeCode);
     $('#name').val(routeName);
-    $('#description').val(routeDescription);
-    
+
 
     $('#newRouteModal').modal('show');
 
@@ -115,7 +119,7 @@ function onDelete(button) {
             // Realizar petición AJAX para eliminar al usuario
             $.ajax({
                 type: 'DELETE',
-                url: '/users/'+routeId,
+                url: '/routes/'+routeId,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
@@ -141,7 +145,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
     const id = $('#route_id').val();
     const code = $('#code').val();
     const name = $('#name').val();
-    const description = $('#description').val();
     const user = $('#user').val();
 
     // validar que el campo de código no esté vacío
@@ -164,6 +167,19 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
         $('#name').css('border-color', '#ced4da');
     }
 
+    // si es nuevo registro validar que el technico o user_id no exista en la lista routesList
+    if ( !id || id === '' || id === null || id === undefined) {
+        let find = routesList.find(route => route.user_id == user);
+        if ( find ) {
+            toastr.error('El usuario ya tiene asignada la ruta: ' + find.name);
+            // border radius red
+            $('#user').css('border-color', 'red');
+            return;
+        } else {
+            // borde default bootstrap;
+            $('#user').css('border-color', '#ced4da');
+        }
+    }
 
     if ( !validCode ) {
         toastr.error('El código de la ruta ya existe.');
@@ -172,7 +188,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
 
     let url = '';
     let method = '';
-    let body = {};
 
     if ( id ) {
         url = '/routes/' + id;
@@ -191,7 +206,6 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
         data: {
             code: code,
             name: name,
-            description: description,
             user: user,
         },
         success: function(response) {
@@ -223,14 +237,12 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
 function cleanModal() {
     $('#code').val('');
     $('#name').val('');
-    $('#description').val('');
     $('#route_id').val('');
     $('#user').val('');
     $('#code').css('border-color', '#ced4da');
     $('#name').css('border-color', '#ced4da');
-    $('#description').css('border-color', '#ced4da');
     $('#user').css('border-color', '#ced4da');
 
-    
+
 }
 

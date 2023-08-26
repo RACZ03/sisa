@@ -41,12 +41,12 @@
                              </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
-                             <div class="form-group">
-                                <label for="route">Ruta</label>
-                                <select class="form-control" id="route" name="route" required>
-                                    <option value="" selected disabled>Seleccione una ruta</option>
+                            <div class="form-group">
+                                <label for="technical">Técnico</label>
+                                <select class="form-control" id="technical" name="technical" required>
+                                    <option value="" selected disabled>Seleccione un técnico</option>
                                     @foreach ($routes as $route)
-                                        <option value="{{ $route->id }}">{{ $route->name }}</option>
+                                        <option value="{{ $route->user->id }}">{{ $route->user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -67,9 +67,10 @@
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6-col-sm-12 col-xs-12">
+
                             <div class="form-group">
-                                <label for="technical">Técnico</label>
-                                <select class="form-control" id="technical" name="technical" required>
+                                <label for="route">Ruta</label>
+                                <select class="form-control" id="route" name="route" required>
                                 </select>
                             </div>
                         </div>
@@ -91,9 +92,8 @@
                             <table class="table" id="tablaMateriales">
                                 <thead>
                                 <tr>
-                                    <th></th>
                                     <th>Código</th>
-                                    <th>Descripción</th>
+                                    <th>Nombre</th>
                                     <th>Cantidad</th>
                                     <th>Serial</th>
                                 </tr>

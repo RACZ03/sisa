@@ -40,17 +40,23 @@
                                         Fecha Creación
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Estado
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Acciones
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $index => $user)
-                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id}}">
+                                    @if ($user->role->id == 1)
+                                        @continue
+                                    @endif
+                                    <tr data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}" data-user-phone="{{ $user->phone }}" data-user-email="{{ $user->email }}" data-user-role="{{ $user->role->id}}" data-user-state="{{ $user->state->code }}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $user->name }} </p>
                                         </td>
                                         <td class="text-center">
@@ -68,11 +74,33 @@
                                             </span>
                                         </td>
                                         <td class="text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">
+                                                @if ($user->state->code == 'ACTIVE')
+                                                    <span class="badge badge-sm bg-gradient-success">Activo</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Inactivo</span>
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Editar Usuario" onclick="onEditUser(this)">
                                                 <i class="fas fa-user-edit text-secondary"></i>
                                             </a>
+                                            <!-- ACTION CHANGE STATE -->
+                                            @if ($user->state->code == 'ACTIVE')
+                                                <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Desactivar Usuario" onclick="onChangeState(this)">
+                                                    <i class="cursor-pointer fas fa-user-times text-secondary"></i>
+                                                </a>
+                                            @else
+                                                <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Activar Usuario" onclick="onChangeState(this)">
+                                                    <i class="cursor-pointer fas fa-user-check text-secondary"></i>
+                                                </a>
+                                            @endif
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Eliminar Usuario" onclick="onDelete(this)">
                                                 <i class="cursor-pointer fas fa-trash text-secondary"></i>
+                                            </a>
+                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Contraseña" onclick="onChangePassword(this)">
+                                                <i class="cursor-pointer fas fa-key text-secondary"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -109,7 +137,7 @@
                     </div>
                     <div class="mb-2">
                         <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" required oninput="convertToUpperCase(this)">
                     </div>
                     <div class="mb-2">
                         <label for="phone" class="form-label">Teléfono</label>
@@ -135,6 +163,38 @@
                         <button type="button" class="btn btn-primary" id="saveUserBtn">Guardar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FORM ADD CHANGE PASSWORD -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- input id hidden -->
+                <input type="hidden" id="user_id_modal" name="user_id_modal" value="">
+                <!-- div password -->
+                <div class="row" id="passDiv">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password_modal" minlength="6" name="password_modal" autocomplete="password_modal" required>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-2">
+                        <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="password_confirmation_modal" minlength="6" name="password_confirmation_modal" autocomplete="password_confirmation_modal" required>
+                    </div>
+                </div>
+                <!-- div password -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="savePasswordBtn">Guardar</button>
+                </div>
             </div>
         </div>
     </div>

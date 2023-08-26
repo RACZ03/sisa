@@ -28,13 +28,20 @@ class TechnologyController extends Controller
         $request->validate([
             'field' => ['required', Rule::in(['code'])],
             'value' => 'required',
+            'id' => 'nullable|integer'
         ]);
 
         $field = $request->input('field');
         $value = $request->input('value');
+        $id = $request->input('id');
 
+        $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
 
-        $exists = Technology::where('code', $value)->exists();
+        if ($id) {
+            $exists = Technology::where('code', $value)->where('state_id', '=', $state->id )->where('id', '<>', $id)->exists();
+        } else {
+            $exists = Technology::where('code', $value)->where('state_id', '=', $state->id )->exists();
+        }
 
         return response()->json(['exists' => $exists]);
     }
@@ -45,7 +52,6 @@ class TechnologyController extends Controller
         $validatedData = $request->validate([
             'code' => 'required|string|max:255|unique:events,code',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -54,7 +60,6 @@ class TechnologyController extends Controller
                 ['code' => $validatedData['code']],
                 [
                     'name' => $validatedData['name'],
-                    'description' => $validatedData['description'],
                     'state_id' => State::where('code', '=', 'ACTIVE')->first()->id,
                 ]
             );
@@ -89,13 +94,11 @@ class TechnologyController extends Controller
             $validatedData = $request->validate([
                 'code' => 'required|string|max:255|unique:events,code,' . $technology->id,
                 'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:255',
             ]);
 
             // Actualizar los datos del usuario
             $technology->code = $validatedData['code'];
             $technology->name = $validatedData['name'];
-            $technology->description = $validatedData['description'];
             $technology->updated_at = now();
 
             $technology->save();
@@ -129,7 +132,7 @@ class TechnologyController extends Controller
             $technology = Technology::findOrFail($id);
 
             // get state code for INACTIVE
-            $state = State::where('code', 'INACTIVE')->first();
+            $state = State::where('code', 'CANCELLED')->first();
 
             // Actualizar el estado del usuario
             $technology->state_id = $state->id;

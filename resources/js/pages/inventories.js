@@ -18,7 +18,7 @@ function onChangeStatus(button) {
     const inventoryCode = row.dataset.inventoryCode;
     const code = row.dataset.inventoryState;
 
-    var newStatus = code === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    var newStatus = code === 'ACTIVE' ? 'CANCELLED' : 'ACTIVE';
     var message = '';
     if (newStatus === 'ACTIVE') {
         message = `¿Estás seguro que deseas "Activar" el inventario ${inventoryCode}?`;

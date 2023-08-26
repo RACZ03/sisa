@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable(false);
             $table->string('name', 30)->nullable(false);
             $table->unsignedBigInteger('state_id')->nullable(); // Campo state_id
             $table->timestamps();

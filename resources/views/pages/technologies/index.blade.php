@@ -31,9 +31,6 @@
                                         Nombre
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Descripción
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Fecha Creación
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -46,7 +43,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($technologies as $index => $technology)
-                                    <tr data-technology-id="{{ $technology->id }}" data-technology-code="{{ $technology->code }}" data-technology-name="{{ $technology->name }}"  data-technology-description="{{ $technology->description }}">
+                                    <tr data-technology-id="{{ $technology->id }}" data-technology-code="{{ $technology->code }}" data-technology-name="{{ $technology->name }}" >
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
@@ -55,9 +52,6 @@
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $technology->name }} </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $technology->description }} </p>
                                         </td>
                                         <td class="text-center">
                                             <span class="text-secondary text-xs font-weight-bold">
@@ -109,12 +103,7 @@
 
                     <div class="mb-2">
                         <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-
-                    <div class="mb-2">
-                        <label for="name" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description" required></textarea>
+                        <input type="text" class="form-control" id="name" name="name" required oninput="convertToUpperCase(this)">
                     </div>
 
                     <div class="modal-footer">

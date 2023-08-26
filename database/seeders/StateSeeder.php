@@ -37,29 +37,29 @@ class StateSeeder extends Seeder
             'updated_at' => now()
         ]);
 
-        DB::table('states')->insert([
-            'id' => 4,
-            'code' => 'LOADPENDING',
-            'name' => 'Carga Pendiente',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        // DB::table('states')->insert([
+        //     'id' => 4,
+        //     'code' => 'LOADPENDING',
+        //     'name' => 'Carga Pendiente',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
 
-        DB::table('states')->insert([
-            'id' => 5,
-            'code' => 'LOADCOMPLETE',
-            'name' => 'Carga Completa',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        // DB::table('states')->insert([
+        //     'id' => 5,
+        //     'code' => 'LOADCOMPLETE',
+        //     'name' => 'Carga Completa',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
 
-        DB::table('states')->insert([
-            'id' => 6,
-            'code' => 'LOADERROR',
-            'name' => 'Carga con Errores',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        // DB::table('states')->insert([
+        //     'id' => 6,
+        //     'code' => 'LOADERROR',
+        //     'name' => 'Carga con Errores',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
 
     }
 }

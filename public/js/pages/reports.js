@@ -3,7 +3,9 @@
 var $jq = jQuery.noConflict();
   $jq(document).ready(function() {
     // initialize select2
-    $jq('.select2').select2();
+    $jq('.select2').select2({
+        width: '100%'
+    });
 
     // initialize daterangerpicker
     $jq('#date_range').daterangepicker({
@@ -26,7 +28,7 @@ var $jq = jQuery.noConflict();
             {
                 extend: 'excelHtml5',
                 text: 'Exportar a Excel',
-                title: 'Reporte de Inventario' + ' - ' + moment().format('DD/MM/YYYY'),
+                title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-success',
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -35,7 +37,7 @@ var $jq = jQuery.noConflict();
             {
                 extend: 'pdfHtml5',
                 text: 'Exportar a PDF',
-                title: 'Reporte de Inventario' + ' - ' + moment().format('DD/MM/YYYY'),
+                title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-danger',
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -45,7 +47,16 @@ var $jq = jQuery.noConflict();
         ]
     });
 
+
 });
+
+function openSpinner() {
+    $("#overlay").fadeIn(300);　
+}
+
+function offSpinner() {
+    $("#overlay").fadeOut(300);
+}
 
 function buscarInformacion() {
     // obtener valores de los filtros
@@ -68,6 +79,9 @@ function buscarInformacion() {
         event: event
     };
 
+    // open spinner
+    openSpinner();
+
     $.ajax({
         type: 'POST',
         url: '/reports/findData',
@@ -76,13 +90,18 @@ function buscarInformacion() {
         },
         data: body,
         success: function(response) {
+            // close spinner
+            offSpinner();
             // message se logro obtener la información
             toastr.success('Se logro obtener la información');
             // cargar la información en la tabla
             loadDataTable(response.data);
+
         },
         error: function() {
             console.log('error');
+            // close spinner
+            offSpinner();
             // message no se logro obtener la información
             toastr.error('No se logro obtener la información');
         }
@@ -107,12 +126,12 @@ function loadDataTable(data) {
             item.technology,
             item.detail_code,
             item.detail_material,
-            item.detail_material_description,
             item.detail_old_stock,
             item.detail_count,
             item.detail_new_stock,
             item.user,
-            item.detail_series
+            item.detail_series,
+            item.state
         ];
         // push row to rows
         rows.push(row);

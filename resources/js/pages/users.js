@@ -10,7 +10,9 @@ $(document).ready(function() {
     });
 
     const passwordInput = $('#password');
+    const passwordInputModal = $('#password_modal');
     const confirmPasswordInput = $('#password_confirmation');
+    const confirmPasswordInputModal = $('#password_confirmation_modal');
     const phoneInput = $('#phone');
     const emailInput = $('#email');
     const nameInput = $('#name');
@@ -64,18 +66,42 @@ $(document).ready(function() {
         }
     });
 
+    confirmPasswordInputModal.on('blur', function () {
+        const passwordValue = passwordInputModal.val();
+        const confirmPasswordValue = confirmPasswordInputModal.val();
+        const minLength = 6;
+
+        // Verificar que ambas contraseñas tengan al menos 6 caracteres
+        if (passwordValue.length < minLength || confirmPasswordValue.length < minLength) {
+            toastr.error('La contraseña debe tener al menos 6 caracteres.');
+            confirmPasswordInputModal.css('border-color', 'red');
+            return;
+        }
+
+        // Verificar si las contraseñas son iguales
+        if (passwordValue === confirmPasswordValue) {
+            confirmPasswordInputModal.css('border-color', 'green');
+            passwordInputModal.css('border-color', 'green');
+        } else {
+            confirmPasswordInputModal.css('border-color', 'red');
+            passwordInputModal.css('border-color', 'red');
+        }
+    });
+
     // validations phone exists
     phoneInput.on('blur', function () {
         // get value
         const phoneInputValue = phoneInput.val();
-        validateField('phone', phoneInputValue, phoneInput);
+        const id = $('#user_id').val();
+        validateField('phone', phoneInputValue, id, phoneInput);
     });
 
     // validations email exists
     emailInput.on('blur', function () {
         // get value
         const emailInputValue = emailInput.val();
-        validateField('email', emailInputValue, emailInput);
+        const id = $('#user_id').val();
+        validateField('email', emailInputValue, id, emailInput);
     });
 
     // validations name exists
@@ -88,10 +114,17 @@ $(document).ready(function() {
         }
     });
 
+    nameInput.on('blur', function () {
+        convertToUpperCase(nameInput);
+    });
+
 });
 
+function convertToUpperCase(input) {
+    input.value = input.value?.toUpperCase();
+}
 
-function validateField(field, value, elementInput) {
+function validateField(field, value, id, elementInput) {
 
     if ( value === '' ) {
         return
@@ -113,6 +146,7 @@ function validateField(field, value, elementInput) {
         data: {
             field: field,
             value: value,
+            id: id
         },
         success: function(response) {
             if (response.exists) {
@@ -159,6 +193,7 @@ function onEditUser(button) {
     const userPhone = row.dataset.userPhone;
     const userEmail = row.dataset.userEmail;
     const role = row.dataset.userRole;
+    console.log(role);
 
     // select role
     $('#role').val(role);
@@ -251,18 +286,18 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
     // obtener el valor del phoneInput
     let phoneInputValue = phoneInput.val();
     // validar que el valor tenga esta estructa (###) #### #### y la misma cantidad de caracteres
-    if (phoneInputValue.length < 15 || phoneInputValue.length > 15) {
-        toastr.error('El número de teléfono debe tener el formato (###) #### ####.');
-        phoneInput.css('border-color', 'red');
-        return;
-    } else {
-        phoneInput.css('border-color', 'green');
-    }
+    // if (phoneInputValue.length < 15 || phoneInputValue.length > 15) {
+    //     toastr.error('El número de teléfono debe tener el formato (###) #### ####.');
+    //     phoneInput.css('border-color', 'red');
+    //     return;
+    // } else {
+    //     phoneInput.css('border-color', 'green');
+    // }
 
     // validar que la contraseña y confirmacion de contraseña su longitud sea mayor a 6 caracteres y que sean iguales
     const passwordValue = passwordInput.val();
     const confirmPasswordValue = confirmPasswordInput.val();
-    const minLength = 8;
+    const minLength = 6;
 
     if ( id === '' || id === null || id === undefined || id == 0 ) {
         // Verificar que ambas contraseñas tengan al menos 6 caracteres
@@ -348,7 +383,97 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
             }
         }
     });
-})
+});
+
+document.getElementById('savePasswordBtn').addEventListener('click', function () {
+
+    // get id, password, password_confirmation
+    const id = $('#user_id_modal').val();
+    const passwordInput = $('#password_modal');
+    const confirmPasswordInput = $('#password_confirmation_modal');
+
+    // validar que no esten vacios los campos
+    if (passwordInput.val() === '' || confirmPasswordInput.val() === '') {
+        toastr.error('Los campos de contraseña no pueden estar vacíos.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    // validar que la contraseña y confirmacion de contraseña su longitud sea mayor a 6 caracteres y que sean iguales
+    if (passwordInput.val().length < 6 || confirmPasswordInput.val().length < 6) {
+        toastr.error('La contraseña debe tener al menos 6 caracteres.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    // Verificar si las contraseñas son iguales
+    if (passwordInput.val() !== confirmPasswordInput.val()) {
+        toastr.error('Las contraseñas no coinciden.');
+        passwordInput.css('border-color', 'red');
+        confirmPasswordInput.css('border-color', 'red');
+        return;
+    } else {
+        passwordInput.css('border-color', '#ced4da');
+        confirmPasswordInput.css('border-color', '#ced4da');
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/users/change-password/' + id,
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        data: {
+            password: passwordInput.val(),
+            password_confirmation: confirmPasswordInput.val(),
+        },
+        success: function(response) {
+            // hide modal
+            $('#changePasswordModal').modal('hide');
+            if ( response.status == 200 ) {
+                toastr.success(response.message);
+                cleanModal();
+                setTimeout(function () {
+                    window.location.href = '/users';
+                }, 1000);
+            } else {
+                toastr.error(response.message);
+            }
+        }, error: function(e) {
+            if ( e?.responseJSON?.message ) {
+                toastr.error(e.responseJSON.message);
+            } else if ( e?.message ) {
+                toastr.error(e.message);
+            } else {
+                toastr.error('Ha ocurrido un error al guardar el usuario.')
+            }
+        }
+    });
+
+
+});
+
+function onChangePassword(button) {
+
+    let row = button.closest('tr');
+    let userId = row.dataset.userId;
+
+    // clear input password_modal and password_confirmation_modal
+    $('#password_modal').val('');
+    $('#password_confirmation_modal').val('');
+    // asignar el id del usuario al input hidden
+    $('#user_id_modal').val(userId);
+
+    $('#changePasswordModal').modal('show');
+}
 
 
 function cleanModal() {
@@ -368,3 +493,54 @@ function cleanModal() {
 
 
 
+function onChangeState(button) {
+    const row = button.closest('tr');
+
+    // Obtener los valores de los atributos data- correspondientes
+    const user = row.dataset.userId;
+    const code = row.dataset.userState;
+    const userName = row.dataset.userName;
+
+    var newStatus = code === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    var message = '';
+    if (newStatus === 'ACTIVE') {
+        message = `¿Estás seguro que deseas "Activar" el usuario ${userName}?`;
+    } else {
+        message = `¿Estás seguro que deseas "Inactivar" el usuario ${userName}?`;
+    }
+
+    // sweet alert
+    Swal.fire({
+        // title: '¿Estás seguro?',
+        text: message,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/users/change-status/${user}`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (response) {
+                    // Mostrar notificación Toastr con el mensaje de respuesta
+                    toastr.success(response.message);
+                    // Recargar la página
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // En caso de error, mostrar notificación Toastr con el mensaje de error
+                    toastr.error('Ha ocurrido un error al cambiar el estado del registro.');
+                },
+            });
+        }
+    }, function (dismiss) {
+        if (dismiss === 'cancel') {
+            toastr.warning('No se ha realizado ningún cambio.');
+        }
+    });
+
+}

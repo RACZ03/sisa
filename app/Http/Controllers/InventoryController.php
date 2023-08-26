@@ -28,7 +28,7 @@ class InventoryController extends Controller
     {
         // get states code ACTIVE and INCACTIVE
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
-        $stateInactive = DB::table('states')->where('code', '=', 'INACTIVE')->first();
+        $stateInactive = DB::table('states')->where('code', '=', 'CANCELLED')->first();
         // get inventory data order by created_at desc and state active and inactive
         $inventories = Inventory::where('state_id', $state->id)->orWhere('state_id', $stateInactive->id)->orderBy('created_at', 'desc')->get();
 
@@ -66,12 +66,16 @@ class InventoryController extends Controller
         $technicals = User::where('role_id', $role->id)->get();
         $routes = Route::where('state_id', $state->id)->get();
 
+        $technicalsInRoutes = $technicals->whereIn('user_id', $routes->pluck('route_id'));
+        // filter technicals with asigned routes
+
+
         // get user auth
         $user = Auth::user();
 
         // Obtener nombre del usuario logueado
         return view('pages/inventory/create',
-            ['userAuth' => $user, 'events' => $events, 'technologies' => $technologies, 'materials' => $materials, 'technicals' => $technicals, 'routes' => $routes]
+            ['userAuth' => $user, 'events' => $events, 'technologies' => $technologies, 'materials' => $materials, 'technicals' => $technicalsInRoutes, 'routes' => $routes]
         );
     }
 
@@ -138,20 +142,24 @@ class InventoryController extends Controller
                 // Verificar si el save se ejecutó correctamente, actualizar el stock del material
                 if ($inventory_detail->id) {
                     $material = Material::find($value['material_id']);
-                    $material->stock = $material->stock + $value['count'];
+                    if ($request->input('event_id') == $event->id) {
+                        $material->stock = $material->stock + $value['count'];
+                    } else {
+                        $material->stock = $material->stock - $value['count'];
+                    }
                     $material->save();
                 }
             }
 
-            return response()->json(['message' => 'El inventario se guardó correctamente.', 'status' => 200], 201);
+            return response()->json(['message' => 'El movimiento se guardó correctamente.', 'status' => 200], 201);
         } catch (QueryException $e) {
             // Verificar si el error fue causado por una clave única duplicada
             if ($e->getCode() == 23000) {
                 // Si es una clave única duplicada, se devuelve un mensaje de error personalizado
-                return response()->json(['message' => 'El código del material ya existe.', 'error' => $e], 400);
+                return response()->json(['message' => 'Error al guardar el movimiento. El código del movimiento ya existe.', 'error' => $e], 400);
             } else {
                 // Si no es una clave única duplicada, se devuelve el mensaje genérico de error
-                return response()->json(['message' => 'Error al guardar el material.', 'error' => $e], 400);
+                return response()->json(['message' => 'Error al guardar el movimiento.', 'error' => $e], 400);
             }
         }
     }
@@ -178,7 +186,7 @@ class InventoryController extends Controller
             // Verify if code is ACTIVE
             if ($state->code == 'ACTIVE') {
                 // Get the ID of the INACTIVE state
-                $stateInactive = State::where('code', 'INACTIVE')->first();
+                $stateInactive = State::where('code', 'CANCELLED')->first();
                 $inventory->state_id = $stateInactive->id;
                 $inventory->save();
 
@@ -214,7 +222,7 @@ class InventoryController extends Controller
         // concatener fecha y hora
         $date = $date->format('d-m-Y H:i:s');
         // get inventory data
-        return Excel::download(new InventoryExport($id), 'inventario_' . $date . '.xlsx');
+        return Excel::download(new InventoryExport($id), 'Movimientos_' . $date . '.xlsx');
     }
 
 }

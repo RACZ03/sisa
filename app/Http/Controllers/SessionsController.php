@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
+use App\Models\User;
 
 
 class SessionsController extends Controller
@@ -17,25 +19,35 @@ class SessionsController extends Controller
     {
         $attributes = request()->validate([
             'email'=>'required|email',
-            'password'=>'required' 
+            'password'=>'required'
         ]);
+
+        $role = Role::where('code','TECHNICAL')->first();
+
+        $user = User::where('email',$attributes['email'])->first();
+
+        if($user->role_id == $role->id)
+        {
+            return back()->withErrors(['email'=>'El usuario no tiene permiso para acceder.']);
+        }
+
 
         if(Auth::attempt($attributes))
         {
             session()->regenerate();
-            return redirect('dashboard')->with(['success'=>'You are logged in.']);
+            return redirect('dashboard')->with(['success'=>'Bienvenido']);
         }
         else{
 
-            return back()->withErrors(['email'=>'Email or password invalid.']);
+            return back()->withErrors(['email'=>'Correo o contraseña no válidos.']);
         }
     }
-    
+
     public function destroy()
     {
 
         Auth::logout();
 
-        return redirect('/login')->with(['success'=>'You\'ve been logged out.']);
+        return redirect('/login')->with(['success'=>'Sesión finalizada']);
     }
 }

@@ -34,9 +34,6 @@
                                         Nombre
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Descripción
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Stock
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -52,7 +49,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($materials as $index => $material)
-                                    <tr data-material-id="{{ $material->id }}" data-material-code="{{ $material->code }}" data-material-name="{{ $material->name }}" data-material-description="{{ $material->description }}" data-material-technology="{{ $material->technology->id }}" data-material-stock="{{ $material->stock }}" data-material-has-series="{{ $material->has_series }}">
+                                    <tr data-material-id="{{ $material->id }}" data-material-code="{{ $material->code }}" data-material-name="{{ $material->name }}" data-material-technology="{{ $material->technology->id }}" data-material-has-series="{{ $material->has_series }}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
@@ -64,9 +61,6 @@
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $material->name }} </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $material->description }} </p>
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $material->stock }} </p>
@@ -119,7 +113,7 @@
                     <input type="hidden" id="material_id" name="material_id" value="">
                     <div class="mb-2">
                         <label for="technology" class="form-label">Tecnología</label>
-                        <select class="form-select" id="technology" name="technology" required>
+                        <select class="form-select" id="technologyMaterial" name="technology" required>
                             <option value="" selected disabled>Seleccione una tecnología</option>
                             @foreach ($technologies as $technology)
                                 <option value="{{ $technology->id }}">{{ $technology->name }}</option>
@@ -128,24 +122,15 @@
                     </div>
                     <div class="mb-2">
                         <label for="code" class="form-label">Código</label>
-                        <input type="text" class="form-control" id="code" name="code" required oninput="convertToUpperCase(this)">
+                        <input type="text" class="form-control" id="codeMaterial" name="code" required oninput="convertToUpperCase(this)">
                     </div>
                     <div class="mb-2">
                         <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="mb-2">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description"></textarea>
-                    </div>
-                    <!-- div stock required number -->
-                    <div class="mb-2">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock" required>
+                        <input type="text" class="form-control" id="nameMaterial" name="name" required  oninput="convertToUpperCase(this)">
                     </div>
                     <!-- div has_series required radio -->
                     <div class="form-check mt-2 mb-2">
-                        <input class="form-check-input" type="checkbox" id="has_series" name="has_series" value="1">
+                        <input class="form-check-input" type="checkbox" id="has_seriesMaterial" name="has_series" value="1">
                         <label class="form-check-label" for="has_series">
                             Tiene series
                         </label>

@@ -18,7 +18,6 @@ class TechnologySeeder extends Seeder
             'code' => 'HFC',
             'name' => 'HFC',
             'state_id' => 1,
-            'description' => 'Hybrid Fiber Coaxial',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -28,7 +27,6 @@ class TechnologySeeder extends Seeder
             'code' => 'GPON',
             'name' => 'GPON',
             'state_id' => 1,
-            'description' => 'Gigabit Passive Optical Network',
             'created_at' => now(),
             'updated_at' => now()
         ]);

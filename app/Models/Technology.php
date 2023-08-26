@@ -12,7 +12,6 @@ class Technology extends Model
     protected $fillable = [
         'code',
         'name',
-        'description',
         'state_id',
     ];
 

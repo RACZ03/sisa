@@ -50,7 +50,7 @@
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i style="font-size: 1rem;" class="fas fa-lg fa-boxes ps-2 pe-2 text-center text-dark {{ (Request::is('inventory') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
                 </div>
-                <span class="nav-link-text ms-1">Inventario</span>
+                <span class="nav-link-text ms-1">Movimientos</span>
             </a>
         </li>
         <li class="nav-item pb-2">
@@ -61,14 +61,7 @@
                 <span class="nav-link-text ms-1">Reportes</span>
             </a>
         </li>
-        <li class="nav-item pb-2">
-            <a class="nav-link {{ (Request::is('routes') ? 'active' : '') }}" href="{{ url('routes') }}">
-                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i style="font-size: 1rem;" class="fas fa-lg fa-truck ps-2 pe-2 text-center text-dark {{ (Request::is('routes') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-                </div>
-                <span class="nav-link-text ms-1">Rutas</span>
-            </a>
-        </li>
+
         <li class="nav-item pb-2">
             <a class="nav-link {{ (Request::is('materials') ? 'active' : '') }}" href="{{ url('materials') }}">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -86,13 +79,21 @@
             </a>
         </li>
         <li class="nav-item pb-2">
+            <a class="nav-link {{ (Request::is('routes') ? 'active' : '') }}" href="{{ url('routes') }}">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i style="font-size: 1rem;" class="fas fa-lg fa-truck ps-2 pe-2 text-center text-dark {{ (Request::is('routes') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+                </div>
+                <span class="nav-link-text ms-1">Rutas</span>
+            </a>
+        </li>
+        <!-- <li class="nav-item pb-2">
             <a class="nav-link {{ (Request::is('events') ? 'active' : '') }}" href="{{ url('events') }}">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                     <i style="font-size: 1rem;" class="fas fa-lg fa-code-branch ps-2 pe-2 text-center text-dark {{ (Request::is('events') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
                 </div>
                 <span class="nav-link-text ms-1">Eventos</span>
             </a>
-        </li>
+        </li> -->
         <!-- END MODULES -->
     </ul>
   </div>

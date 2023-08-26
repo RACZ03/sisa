@@ -12,7 +12,6 @@ class Route extends Model
     protected $fillable = [
         'code',
         'name',
-        'description',
         'user_id',
         'state_id',
     ];

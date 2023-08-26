@@ -30,9 +30,6 @@
                                         Nombre
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Descripción
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Tecnico
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -48,7 +45,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($routes as $index => $route)
-                                    <tr data-route-id="{{ $route->id }}" data-route-code="{{ $route->code }}" data-route-name="{{ $route->name }} "  data-route-description="{{ $route->description }}" data-route-user="{{$route->user->id}}">
+                                    <tr data-route-id="{{ $route->id }}" data-route-code="{{ $route->code }}" data-route-name="{{ $route->name }} " data-route-user="{{$route->user->id}}">
                                         <td class="ps-4">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $index + 1 }} </p>
                                         </td>
@@ -57,9 +54,6 @@
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->name }} </p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->description }} </p>
                                         </td>
                                         <td class="text-center">
                                             <p class="text-secondary text-xs font-weight-bold mb-0"> {{ $route->user->name }} </p>
@@ -112,13 +106,9 @@
                     </div>
                     <div class="mb-2">
                         <label for="name" class="form-label">Ruta</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" required oninput="convertToUpperCase(this)">
                     </div>
 
-                    <div class="mb-2">
-                        <label for="name" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description" required></textarea>
-                    </div>
                     <div class="mb-2">
                         <label for="route" class="form-label">Tecnico</label>
                         <select class="form-select" id="user" name="user" required>
@@ -150,6 +140,7 @@
 <script>
     // Creamos una variable global para almacenar el valor de csrf_token
     window.csrfToken = '{{ csrf_token() }}';
+    let routesList = @json($routes);
 </script>
 
 <script src="{{ asset('js/pages/route.js') }}"></script>
