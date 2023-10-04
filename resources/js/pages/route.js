@@ -39,7 +39,7 @@ function validateField(field, value, id, elementInput) {
     // Realizar petición AJAX para validar la unicidad del número de teléfono
     $.ajax({
         type: 'POST',
-        url: '/routes/validate-unique-field',
+        url: '/rutas/validate-unique-field',
         headers: {
             'X-CSRF-TOKEN': csrfToken
         },
@@ -119,7 +119,7 @@ function onDelete(button) {
             // Realizar petición AJAX para eliminar al usuario
             $.ajax({
                 type: 'DELETE',
-                url: '/routes/'+routeId,
+                url: '/rutas/'+routeId,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 },
@@ -190,10 +190,10 @@ document.getElementById('saveRouteBtn').addEventListener('click', function () {
     let method = '';
 
     if ( id ) {
-        url = '/routes/' + id;
+        url = '/rutas/' + id;
         method = 'PUT';
     } else {
-        url = '/routes/store';
+        url = '/rutas/store';
         method = 'POST';
     }
 

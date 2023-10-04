@@ -9,20 +9,19 @@
         "brian2694/laravel-toastr": "^5.57",
         "guzzlehttp/guzzle": "^7.4",
         "laravel/framework": "^8.0",
-        "laravel/sanctum": "^3.2",
+        "laravel/sanctum": "^2.0",
         "laravel/tinker": "^2.6",
-        "laravel/ui": "^4.2",
+        "laravel/ui": "^3.2",
         "maatwebsite/excel": "^3.1",
         "snapappointments/bootstrap-select": "^1.13",
         "twbs/bootstrap": "^5.3"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^2.0",
         "fakerphp/faker": "^1.17",
         "laravel/sail": "^1.12",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.0"
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "psr-4": {

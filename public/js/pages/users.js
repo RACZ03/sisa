@@ -120,6 +120,14 @@ $(document).ready(function() {
 
 });
 
+function openSpinner() {
+    $("#overlay").fadeIn(300);　
+}
+
+function offSpinner() {
+    $("#overlay").fadeOut(300);
+}
+
 function convertToUpperCase(input) {
     input.value = input.value?.toUpperCase();
 }
@@ -193,7 +201,7 @@ function onEditUser(button) {
     const userPhone = row.dataset.userPhone;
     const userEmail = row.dataset.userEmail;
     const role = row.dataset.userRole;
-    console.log(role);
+    // console.log(role);
 
     // select role
     $('#role').val(role);
@@ -346,6 +354,9 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
         method = 'POST';
     }
 
+    // show spinner
+    openSpinner();
+
     $.ajax({
         type: method,
         url: url,
@@ -363,6 +374,8 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
         success: function(response) {
             // hide modal
             $('#createUserModal').modal('hide');
+            // hide spinner
+            offSpinner();
             if ( response.status == 200 ) {
                 toastr.success(response.message);
                 cleanModal();
@@ -374,6 +387,8 @@ document.getElementById('saveUserBtn').addEventListener('click', function () {
             }
         },
         error: function(e) {
+            // hide spinner
+            offSpinner();
             if ( e?.responseJSON?.message ) {
                 toastr.error(e.responseJSON.message);
             } else if ( e?.message ) {
@@ -425,6 +440,9 @@ document.getElementById('savePasswordBtn').addEventListener('click', function ()
         confirmPasswordInput.css('border-color', '#ced4da');
     }
 
+    // show spinner
+    openSpinner();
+
     $.ajax({
         type: 'POST',
         url: '/users/change-password/' + id,
@@ -438,6 +456,8 @@ document.getElementById('savePasswordBtn').addEventListener('click', function ()
         success: function(response) {
             // hide modal
             $('#changePasswordModal').modal('hide');
+            // hide spinner
+            offSpinner();
             if ( response.status == 200 ) {
                 toastr.success(response.message);
                 cleanModal();
@@ -448,6 +468,8 @@ document.getElementById('savePasswordBtn').addEventListener('click', function ()
                 toastr.error(response.message);
             }
         }, error: function(e) {
+            // hide spinner
+            offSpinner();
             if ( e?.responseJSON?.message ) {
                 toastr.error(e.responseJSON.message);
             } else if ( e?.message ) {
@@ -509,6 +531,9 @@ function onChangeState(button) {
         message = `¿Estás seguro que deseas "Inactivar" el usuario ${userName}?`;
     }
 
+    // show spinner
+    openSpinner();
+
     // sweet alert
     Swal.fire({
         // title: '¿Estás seguro?',
@@ -526,12 +551,16 @@ function onChangeState(button) {
                     'X-CSRF-TOKEN': csrfToken
                 },
                 success: function (response) {
+                    // hide spinner
+                    offSpinner();
                     // Mostrar notificación Toastr con el mensaje de respuesta
                     toastr.success(response.message);
                     // Recargar la página
                     location.reload();
                 },
                 error: function (xhr, status, error) {
+                    // hide spinner
+                    offSpinner();
                     // En caso de error, mostrar notificación Toastr con el mensaje de error
                     toastr.error('Ha ocurrido un error al cambiar el estado del registro.');
                 },

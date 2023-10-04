@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('profile');
 	})->name('profile');
 
+    Route::get('change-password', [ChangePasswordController::class, 'index'])->name('change-password');
 
 
     // ROUTES FOR USERS
@@ -64,11 +65,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/technologies/validate-unique-field', [TechnologyController::class, 'validateUniqueField']);
 
     // ROUTES FOR ROUTES
-    Route::get('routes', [RoutesController::class, 'index'])->name('routes');
-    Route::post('/routes/store', [RoutesController::class, 'store']);
-    Route::put('/routes/{id}', [RoutesController::class, 'update']);
-    Route::delete('/routes/{id}', [RoutesController::class, 'destroy']);
-    Route::post('/routes/validate-unique-field', [RoutesController::class, 'validateUniqueField']);
+    Route::get('rutas', [RoutesController::class, 'index'])->name('rutas');
+    Route::post('/rutas/store', [RoutesController::class, 'store']);
+    Route::put('/rutas/{id}', [RoutesController::class, 'update']);
+    Route::delete('/rutas/{id}', [RoutesController::class, 'destroy']);
+    Route::post('/rutas/validate-unique-field', [RoutesController::class, 'validateUniqueField']);
 
 
     // ROUTES FOR MATERIALS

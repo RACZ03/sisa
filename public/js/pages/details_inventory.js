@@ -286,20 +286,21 @@ $(document).ready(function () {
         let bandExists = false;
         let stockExists = false;
 
+
         listTemp.forEach((material, index) => {
 
             let cantidad = $('#cantidad-' + index).val() || 0;
 
             if ( event == 2 ) {
                 // buscar el material
-                let m = materiales.find(x => x.id = material.id);
+                let m = materiales.find(x => x.id == material.id);
 
                 if ( m?.stock < cantidad ) {
                     toastr.error(`La cantidad supera el stock del material: ${material.name}.`);
                     $('#cantidad-' + index).addClass('border-danger');
                     bandExists = true;
                     return;
-                } else if (m.stock == 0 ) {
+                } else if (m.stock == 0 && cantidad > 0 ) {
                     $('#cantidad-' + index).addClass('border-danger');
                     stockExists = true;
                     return;
@@ -307,7 +308,6 @@ $(document).ready(function () {
                     $('#cantidad-' + index).removeClass('border-danger');
                     $('#cantidad-' + index).addClass('border-success');
                 }
-
 
             }
         });

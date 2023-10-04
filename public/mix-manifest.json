@@ -4,6 +4,7 @@
     "/assets/css/soft-ui-dashboard.css": "/assets/css/soft-ui-dashboard.css",
     "/assets/js/soft-ui-dashboard.min.js": "/assets/js/soft-ui-dashboard.min.js",
     "/js/soft-ui-dashboard.js": "/js/soft-ui-dashboard.js",
+    "/js/pages/changepassword.js": "/js/pages/changepassword.js",
     "/js/pages/details_inventory.js": "/js/pages/details_inventory.js",
     "/js/pages/event.js": "/js/pages/event.js",
     "/js/pages/inventories.js": "/js/pages/inventories.js",

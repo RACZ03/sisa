@@ -21,7 +21,12 @@
                         <span class="d-sm-inline d-none">Cerrar Sesión</span>
                     </a>
                 </li>
-                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                <li class="nav-item d-flex align-items-center" style="margin-left: 20px">
+                    <a href="{{ url('/change-password')}}" class="nav-link text-body font-weight-bold px-0">
+                        <i class="fa fa-key me-sm-1"></i>
+                    </a>
+                </li>
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center" style="margin-left: 20px">
                     <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                     <div class="sidenav-toggler-inner">
                         <i class="sidenav-toggler-line"></i>
