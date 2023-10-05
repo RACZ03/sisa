@@ -142,8 +142,22 @@ $(document).ready(function () {
 
         // validar si no es un numero mostrar una alerta
         if (isNaN(cantidad)) {
-            $(this).val();
+            // limpiar el input
+            $(this).val('');
             return;
+        }
+
+        if ( cantidad !== null && cantidad !== undefined && cantidad !== '' ) {
+            // validate if cantidad is mayor a 0 and menor a 50
+            if (cantidad < 1 || cantidad > 50) {
+                toastr.error('La cantidad debe ser mayor a 0 y menor a 50.');
+                $(this).addClass('border-danger');
+                $(this).val('');
+                return;
+            } else {
+                $(this).removeClass('border-danger');
+                $(this).addClass('border-success');
+            }
         }
 
         // obtener el codigo del material de la segunda columna
@@ -176,7 +190,7 @@ $(document).ready(function () {
                 // get position from table
                 let position = $(this).closest('tr').index();
                 // add series and asigned id to input for position in array and for row position in table
-                series += `<input type="text" class="form-control series" id="series-${position}-${i}" style="max-width: 150px; min-width:100px; margin-left: 10px;" placeholder="Serie">`;
+                series += `<input type="text" class="form-control series" id="series-${position}-${i}" autocomplete="off" style="max-width: 150px; min-width:100px; margin-left: 10px;" placeholder="Serie">`;
 
             }
             $(this).closest('tr').find('.series-td').html(`<div class="d-flex">${series}</div>`);
@@ -184,7 +198,7 @@ $(document).ready(function () {
     });
 
     // detectar evento paste posterior a un blur
-    $('#tablaMateriales').on('paste blur change', '.series', function (e) {
+    $('#tablaMateriales').on('paste', '.series', function (e) {
         e.preventDefault(); // Evita que el texto pegado se agregue al input automáticamente
 
         // Guarda una referencia al input actual
