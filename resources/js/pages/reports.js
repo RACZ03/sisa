@@ -31,7 +31,7 @@ var $jq = jQuery.noConflict();
                 title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-success',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                 }
             },
             {
@@ -40,7 +40,7 @@ var $jq = jQuery.noConflict();
                 title: 'Reporte de Movimientos' + ' - ' + moment().format('DD/MM/YYYY'),
                 className: 'btn btn-danger',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                 },
                 orientation: 'landscape'
             }
@@ -127,11 +127,12 @@ function loadDataTable(data) {
             item.detail_code,
             item.detail_material,
             item.detail_old_stock,
-            item.detail_count,
+            item.detail_load == null ? 0 : item.detail_load,
+            item.detail_debit == null ? 0 : item.detail_debit,
             item.detail_new_stock,
             item.user,
-            item.detail_series,
-            item.state
+            item.event_id == 1 ? item.detail_series : '' ,
+            item.event_id == 2 ? item.detail_series : '' ,
         ];
         // push row to rows
         rows.push(row);

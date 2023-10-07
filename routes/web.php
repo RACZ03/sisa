@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
     Route::post('/inventory/store', [InventoryController::class, 'store']);
     Route::post('/inventory/change-status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+    Route::post('/inventory/validate-unique-field', [InventoryController::class, 'validateUniqueField']);
 
     // ROUTES FOR REPORTS
     Route::get('reports', [ReportsController::class, 'index'])->name('reports');

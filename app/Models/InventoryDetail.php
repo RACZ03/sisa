@@ -16,6 +16,7 @@ class InventoryDetail extends Model
         'count',
         'new_stock',
         'series',
+        'existing_series',
         'inventory_id',
         'state_id',
     ];

@@ -144,13 +144,14 @@ $(document).ready(function () {
         if (isNaN(cantidad)) {
             // limpiar el input
             $(this).val('');
+            $(this).closest('tr').find('.series-td').empty();
             return;
         }
 
         if ( cantidad !== null && cantidad !== undefined && cantidad !== '' ) {
-            // validate if cantidad is mayor a 0 and menor a 50
-            if (cantidad < 1 || cantidad > 50) {
-                toastr.error('La cantidad debe ser mayor a 0 y menor a 50.');
+            // validate if cantidad is mayor a 0 and menor a 500
+            if (cantidad < 1 || cantidad > 500) {
+                toastr.error('La cantidad debe ser mayor a 0 y menor a 500.');
                 $(this).addClass('border-danger');
                 $(this).val('');
                 return;
@@ -190,7 +191,7 @@ $(document).ready(function () {
                 // get position from table
                 let position = $(this).closest('tr').index();
                 // add series and asigned id to input for position in array and for row position in table
-                series += `<input type="text" class="form-control series" id="series-${position}-${i}" autocomplete="off" style="max-width: 150px; min-width:100px; margin-left: 10px;" placeholder="Serie">`;
+                series += `<input type="text" class="form-control series" id="series-${position}-${i}" autocomplete="off" style="max-width: 200px; min-width:200px; width: 200px; margin-left: 10px;" placeholder="Serie">`;
 
             }
             $(this).closest('tr').find('.series-td').html(`<div class="d-flex">${series}</div>`);
@@ -198,7 +199,7 @@ $(document).ready(function () {
     });
 
     // detectar evento paste posterior a un blur
-    $('#tablaMateriales').on('paste', '.series', function (e) {
+    $('#tablaMateriales').on('input', '.series', function (e) {
         e.preventDefault(); // Evita que el texto pegado se agregue al input automáticamente
 
         // Guarda una referencia al input actual
@@ -214,21 +215,82 @@ $(document).ready(function () {
             pastedText = $(this).val();
         }
 
-        // Pega el texto en el input actual
-        $currentInput.val(pastedText);
+        pastedText = pastedText.replace(/\s/g, '');
 
-        // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
-        let cantidad = $currentInput.closest('tr').find('.cantidad').val();
+        // buscar el material de la fila de la serie
+        let materialCode = $(this).closest('tr').find('td:nth-child(1)').text();
 
-        // Calcula la posición y el índice del input actual
-        let position = $currentInput.closest('tr').index();
-        let index = $currentInput.index();
+        let material = materiales.find(m => m.code == materialCode);
 
-        // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
-        if (index < cantidad - 1) {
-            $(`#series-${position}-${index + 1}`).focus();
+        let event = $('#event').val();
+
+        if (event == 2) {
+            // Pega el texto en el input actual
+            $currentInput.val(pastedText);
+
+            // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
+            let cantidad = $currentInput.closest('tr').find('.cantidad').val();
+
+            // Calcula la posición y el índice del input actual
+            let position = $currentInput.closest('tr').index();
+            let index = $currentInput.index();
+
+            // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
+            if (index < cantidad - 1) {
+                $(`#series-${position}-${index + 1}`).focus();
+            }
+
+            return
         }
+
+        // Realizar petición AJAX para validar la unicidad del número de teléfono
+        $.ajax({
+            type: 'POST',
+            url: '/inventory/validate-unique-field',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                series: pastedText,
+                material_id: material.id
+            },
+            success: function(response) {
+                if (response.exists) {
+                    toastr.error('El Código del material ya existe.');
+                    $currentInput.val('');
+                    // border red
+                    $currentInput.addClass('border-danger');
+                    return true;
+                } else {
+                    // remove border red
+                    $currentInput.removeClass('border-danger');
+                    $currentInput.addClass('border-success');
+                    // Pega el texto en el input actual
+                    $currentInput.val(pastedText);
+
+                    // Obtiene la cantidad ingresada en el input cantidad del mismo row de la serie
+                    let cantidad = $currentInput.closest('tr').find('.cantidad').val();
+
+                    // Calcula la posición y el índice del input actual
+                    let position = $currentInput.closest('tr').index();
+                    let index = $currentInput.index();
+
+                    // Si hay más inputs de series en la fila, cambia el enfoque al siguiente
+                    if (index < cantidad - 1) {
+                        $(`#series-${position}-${index + 1}`).focus();
+                    }
+                }
+
+            },
+            error: function() {
+                toastr.error('Ha ocurrido un error al validar el codigo del material.');
+                return true;
+            }
+        });
+
+
     });
+
 
 
     // Evento al hacer clic en el botón "Guardar" btnSaveInventory

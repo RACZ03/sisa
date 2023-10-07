@@ -81,7 +81,10 @@
                                         Stock Anterior
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Cantidad
+                                        Carga
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Débito
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Stock Nuevo
@@ -90,10 +93,10 @@
                                         Técnico
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Serie
+                                        Serie Cargada
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Estado
+                                        Serie Debitada
                                     </th>
                                 </tr>
                             </thead>

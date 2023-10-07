@@ -61,6 +61,9 @@ class ReportsController extends Controller
                 $query->whereIn('event_id', $event);
             }
 
+            // validate inventory state ACTIVE
+            $state = State::where('code', '=', 'ACTIVE')->first();
+            $query->where('state_id', $state->id);
             // order by date asc
             $query->orderBy('date', 'asc');
             $inventories = $query->get();
@@ -72,11 +75,25 @@ class ReportsController extends Controller
             // return response()->json(['status' => 200 , 'data' => $inventories, 'query' => $query_text]);
             // Obtener el detalle de cada inventario
             $all_details = [];
+            $all_detail_series_delete = [];
             foreach ($inventories as $inventory) {
-                $details = InventoryDetail::where('inventory_id', $inventory->id)->get();
 
+                $details = InventoryDetail::where('inventory_id', $inventory->id)
+                                            ->where('state_id', $state->id)
+                                            ->get();
+
+
+                $seriesExisting = '';
+                // create array series delete
+                $seriesDelete = [];
+                $seriesExistentes = [];
+                $seriesNew = [];
+                $count = 0;
+                $idMaterial = 0;
                 // recorrer details
                 foreach ($details as $detail) {
+
+
                     $all_details[] = [
                         'id' => $inventory->id,
                         'code' => $inventory->code,
@@ -99,11 +116,19 @@ class ReportsController extends Controller
                         'detail_material' => $detail->material->name,
                         'detail_old_stock' => $detail->old_stock,
                         'detail_new_stock' => $detail->new_stock,
-                        'detail_count' => $detail->count,
+                        'detail_load' => $inventory->event_id == 1 ? $detail->count : 0,
+                        'detail_debit' => $inventory->event_id == 2 ? $detail->count : 0,
                         'detail_series' => $detail->series,
+                        'detail_series' => $detail->series,
+                        // 'detail_series_existing' => $detail->existing_series,
                     ];
-                }
 
+
+
+                }
+                $seriesExisting = '';
+                $seriesDelete = [];
+                $seriesNew = [];
 
             }
 

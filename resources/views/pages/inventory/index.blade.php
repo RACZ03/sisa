@@ -95,17 +95,20 @@
                                                 <span class="badge {{ $inventory->state->code == 'ACTIVE' ? 'bg-gradient-success' : 'bg-gradient-danger' }} rounded-pill">{{ $inventory->state->name }}</span>
                                             </span>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-left">
                                             <a href="{{ route('inventory.show', $inventory->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Ver Detalle" onclick="onEdit(this)">
                                                 <i class="fas fa-eye text-secondary"></i>
                                             </a>
-                                            <!-- Action change status -->
-                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Estado" onclick="onChangeStatus(this)">
-                                                <i class="fas fa-exchange-alt text-secondary"></i>
-                                            </a>
+
                                             <a href="{{ route('inventory.exports', $inventory->id) }}" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Exportar Excel" onclick="onEdit(this)">
                                                 <i class="fas fa-file-excel text-secondary"></i>
                                             </a>
+                                            <!-- Action change status -->
+                                            @if( $index == 0)
+                                            <a href="#" class="mx-3" data-bs-toggle="tooltip" data-bs-original-title="Cambiar Estado" onclick="onChangeStatus(this)">
+                                                <i class="fas fa-exchange-alt text-secondary"></i>
+                                            </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
