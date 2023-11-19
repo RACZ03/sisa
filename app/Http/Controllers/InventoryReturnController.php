@@ -23,14 +23,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
 
-class InventoryController extends Controller
+class InventoryReturnController extends Controller
 {
     public function index()
     {
         // get states code ACTIVE and INCACTIVE
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
         $stateInactive = DB::table('states')->where('code', '=', 'CANCELLED')->first();
-        $events = Event::where('state_id', $state->id)->whereIn('code', ['LOAD', 'DEBIT'])->get();
+        // get inventory data order by created_at desc and state active and inactive
+        $events = Event::where('state_id', $state->id)->whereIn('code', ['DISREPAIR', 'REFULBISHE'])->get();
         // get inventory data order by created_at desc and state active and inactive and event load and debit
         $inventories = Inventory::whereIn('event_id', $events->pluck('id'))
                                 ->where('state_id', $state->id)
@@ -45,7 +46,11 @@ class InventoryController extends Controller
         $state = DB::table('states')->where('code', '=', 'ACTIVE')->first();
         $inventory = Inventory::find($id);
         // find details with inventory id and state active
-        $inventory_details = InventoryDetail::where('inventory_id', $id)->where('state_id', $state->id)->get();
+        $events = Event::where('state_id', $state->id)->whereIn('code', ['LOAD', 'DEBIT'])->get();
+        $inventory_details = InventoryDetail::where('inventory_id', $id)
+                                            ->where('state_id', $state->id)
+                                            ->whereIn('event_id', $events->pluck('id'))
+                                            ->get();
         $user = Auth::user();
 
         // si no existe el inventario return index

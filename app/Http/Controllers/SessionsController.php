@@ -26,6 +26,11 @@ class SessionsController extends Controller
 
         $user = User::where('email',$attributes['email'])->first();
 
+        if($user == null)
+        {
+            return back()->withErrors(['email'=>'El usuario no existe.']);
+        }
+
         if($user->role_id == $role->id)
         {
             return back()->withErrors(['email'=>'El usuario no tiene permiso para acceder.']);
